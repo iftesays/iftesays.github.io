@@ -13,7 +13,7 @@
 // needed.
 window.STORE_CONFIG = {
   brand: "Holdfast",
-  shopDomain: "",
+  shopDomain: "1yfccs-kr.myshopify.com",
   currency: "USD",
   offers: [
     {
@@ -22,7 +22,7 @@ window.STORE_CONFIG = {
       sublabel: "For one tradesperson",
       price: 64.99,
       compareAt: null,
-      variantId: "",
+      variantId: "67657851404501",
       quantity: 1
     },
     {
@@ -31,7 +31,7 @@ window.STORE_CONFIG = {
       sublabel: "One for the van, one for the bag",
       price: 109.99,
       compareAt: 129.98,
-      variantId: "",
+      variantId: "67657851437269",
       quantity: 1,
       badge: "Best value"
     }
