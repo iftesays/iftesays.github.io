@@ -35,7 +35,7 @@
             <p>{% render 'icon', name: 'truck' %} Free US shipping on this order.</p>
           {%- elsif remaining > 0 -%}
             <p>{% render 'icon', name: 'truck' %} Spend {{ remaining | money }} more for free shipping.</p>
-            <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ progress }}"><span style="width: {{ progress }}%"></span></div>
+            <div class="progress" role="progressbar" aria-label="Progress toward free shipping" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ progress }}"><span style="width: {{ progress }}%"></span></div>
           {%- else -%}
             <p>{% render 'icon', name: 'truck' %} Your order ships free.</p>
             <div class="progress"><span style="width: 100%"></span></div>
@@ -60,11 +60,11 @@
                   {%- endunless -%}
                   <div class="cart-item__actions">
                     <div class="quantity quantity--small">
-                      <button type="button" class="quantity__button" data-line-change="{{ forloop.index }}" data-quantity="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity of {{ item.product.title | escape }}">{% render 'icon', name: 'minus' %}</button>
-                      <span class="quantity__input" aria-label="Quantity">{{ item.quantity }}</span>
-                      <button type="button" class="quantity__button" data-line-change="{{ forloop.index }}" data-quantity="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity of {{ item.product.title | escape }}">{% render 'icon', name: 'plus' %}</button>
+                      <button type="button" class="quantity__button" data-line-change="{{ item.key }}" data-quantity="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity of {{ item.title | escape }}">{% render 'icon', name: 'minus' %}</button>
+                      <span class="quantity__input"><span class="visually-hidden">Quantity </span>{{ item.quantity }}</span>
+                      <button type="button" class="quantity__button" data-line-change="{{ item.key }}" data-quantity="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity of {{ item.title | escape }}">{% render 'icon', name: 'plus' %}</button>
                     </div>
-                    <button type="button" class="link-plain" data-line-change="{{ forloop.index }}" data-quantity="0">Remove</button>
+                    <button type="button" class="link-plain" data-line-change="{{ item.key }}" data-quantity="0" aria-label="Remove {{ item.title | escape }}">Remove</button>
                   </div>
                 </div>
                 <div class="cart-item__price">
@@ -73,13 +73,18 @@
                 </div>
               </li>
 
-              {%- if settings.upsell_enabled and item.variant.title == settings.upsell_from -%}
+              {%- if settings.upsell_enabled and item.variant.title == settings.upsell_from and item.quantity == 1 -%}
                 {%- for v in item.product.variants -%}
                   {%- if v.title == settings.upsell_to and v.available -%}
+                    {%- comment -%} update.js sets absolute quantities, so include any of the larger pack already in the cart. {%- endcomment -%}
+                    {%- assign upgrade_qty = item.quantity -%}
+                    {%- for other in cart.items -%}
+                      {%- if other.variant_id == v.id -%}{%- assign upgrade_qty = upgrade_qty | plus: other.quantity -%}{%- endif -%}
+                    {%- endfor -%}
                     {%- assign extra = v.price | times: item.quantity | minus: item.final_line_price -%}
                     <li class="cart-upsell">
-                      <p><strong>Add a second pair</strong>Get {{ v.title }} for {{ extra | money }} more.{% if settings.upsell_text != blank %} {{ settings.upsell_text }}{% endif %}</p>
-                      <button type="button" class="btn btn--secondary btn--small" data-upgrade-from="{{ item.variant_id }}" data-upgrade-to="{{ v.id }}" data-upgrade-quantity="{{ item.quantity }}" data-upgrade-title="{{ v.title | escape }}">Switch</button>
+                      <p><strong>Add a second pair</strong>Get {{ v.title | downcase }} for {{ extra | money }} more.{% if settings.upsell_text != blank %} {{ settings.upsell_text }}{% endif %}</p>
+                      <button type="button" class="btn btn--secondary btn--small" data-upgrade-from="{{ item.variant_id }}" data-upgrade-to="{{ v.id }}" data-upgrade-quantity="{{ upgrade_qty }}" data-upgrade-title="{{ v.title | escape }}" aria-label="Switch to {{ v.title | escape }}">Switch</button>
                     </li>
                   {%- endif -%}
                 {%- endfor -%}

@@ -3,7 +3,7 @@
   "presets": {
     "Default": {
       "color_accent": "#c8470c",
-      "free_shipping_threshold": 0,
+      "free_shipping_threshold": 70,
       "upsell_enabled": true,
       "upsell_from": "1 Pair",
       "upsell_to": "2 Pairs",
@@ -14,7 +14,7 @@
       "color_sale": "#2e7d4f",
       "primary_product": "holdfast-anti-slip-work-knee-pads",
       "brand_tagline": "Work knee pads that stay up.",
-      "upsell_text": "One for the van, one for the bag."
+      "upsell_text": ""
     }
   }
 }

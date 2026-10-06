@@ -10,7 +10,7 @@
         {%- endif -%}
         {%- for block in section.blocks -%}
           <button type="button" class="hotspot" data-hotspot="{{ forloop.index }}" style="left: {{ block.settings.x }}%; top: {{ block.settings.y }}%" aria-label="{{ block.settings.title | escape }}" aria-expanded="false" aria-controls="Hotspot-{{ section.id }}-{{ forloop.index }}">
-            {% render 'icon', name: 'plus' %}
+            <span aria-hidden="true">{{ forloop.index }}</span>
           </button>
         {%- endfor -%}
       </div>
@@ -23,12 +23,12 @@
         <ol class="hotspots__list">
           {%- for block in section.blocks -%}
             <li class="hotspots__item" data-hotspot-item="{{ forloop.index }}" {{ block.shopify_attributes }}>
-              <button type="button" class="hotspots__trigger" aria-expanded="false" aria-controls="Hotspot-{{ section.id }}-{{ forloop.index }}">
+              <button type="button" class="hotspots__trigger" id="HotspotTrigger-{{ section.id }}-{{ forloop.index }}" aria-expanded="false" aria-controls="Hotspot-{{ section.id }}-{{ forloop.index }}">
                 <span class="hotspots__num" aria-hidden="true">{{ forloop.index }}</span>
                 <span class="hotspots__title">{{ block.settings.title }}</span>
                 {% render 'icon', name: 'plus' %}
               </button>
-              <div class="hotspots__panel" id="Hotspot-{{ section.id }}-{{ forloop.index }}" role="region">
+              <div class="hotspots__panel" id="Hotspot-{{ section.id }}-{{ forloop.index }}" role="region" aria-labelledby="HotspotTrigger-{{ section.id }}-{{ forloop.index }}">
                 <div><p>{{ block.settings.text }}</p></div>
               </div>
             </li>
@@ -57,7 +57,7 @@
       "name": "Hotspot",
       "settings": [
         { "type": "text", "id": "title", "label": "Title", "default": "Hard shell cap" },
-        { "type": "textarea", "id": "text", "label": "Text", "default": "Stands up to concrete, gravel and loose screws so the cushion underneath lasts longer." },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Stands up to concrete, gravel and loose screws, so the cushion underneath lasts longer." },
         { "type": "range", "id": "x", "label": "Horizontal position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
         { "type": "range", "id": "y", "label": "Vertical position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 46 }
       ]

@@ -38,7 +38,7 @@
           "settings": {
             "heading": "Shipping & returns",
             "source": "custom",
-            "content": "<p>Free US shipping on every order, with a tracking link by email when it ships.</p><p>Not right for you? Return them within 30 days of delivery for a full refund, even if you've worn them. <a href=\"/pages/faq\">How returns work</a></p>",
+            "content": "<p>Standard US shipping is $8, free on orders of $70 or more. You'll get a tracking link by email when your order ships.</p><p>Not right for you? Start a return within 30 days of delivery. <a href=\"/pages/faq\">How returns work</a></p>",
             "open": false
           }
         }
@@ -81,12 +81,12 @@
       ],
       "settings": {
         "anchor": "why",
-        "before_label": "Typical strap pad",
+        "before_label": "Basic strap pad",
         "after_label": "Holdfast",
-        "caption": "Both shown after standing up from a kneel. Drag to compare.",
+        "caption": "Illustration. Drag to compare.",
         "layout": "media_left",
         "heading": "Why they don't slide down",
-        "text": "<p>Most strap knee pads stay up one way: a tight band across the back of the knee. Holdfast uses two straps, one above the knee and one below, lined with silicone that grips your pants.</p>",
+        "text": "<p>A basic strap knee pad stays up one way: a tight band behind the knee. Holdfast uses two straps, one above the knee and one below, lined with silicone that grips your pants.</p>",
         "alt_background": true
       }
     },
@@ -107,8 +107,8 @@
           "settings": {
             "title": "Gel cushion over foam",
             "text": "Gel spreads your weight across the pad instead of the point of your kneecap. High-density foam underneath keeps it supported through a full day.",
-            "x": 40,
-            "y": 71
+            "x": 50,
+            "y": 24
           }
         },
         "h3": {
@@ -116,7 +116,7 @@
           "settings": {
             "title": "Two adjustable straps",
             "text": "One strap sits above the knee and one below, so neither has to be cranked tight and nothing presses into the back of your knee.",
-            "x": 77,
+            "x": 71,
             "y": 34
           }
         },
@@ -186,9 +186,9 @@
         "r4"
       ],
       "settings": {
-        "heading": "Holdfast vs. typical strap knee pads",
+        "heading": "Holdfast vs. a basic foam strap pad",
         "us_label": "Holdfast",
-        "them_label": "Typical single-strap pad",
+        "them_label": "Basic foam strap pad",
         "alt_background": true
       }
     },
@@ -206,7 +206,7 @@
           "type": "question",
           "settings": {
             "question": "Will they stay up when I stand?",
-            "answer": "<p>That's what they're designed to do. The silicone lining inside each strap grips your pants, and the two straps hold the pad over your kneecap instead of relying on one tight band. If they still slide, send them back within 30 days.</p>"
+            "answer": "<p>That's what they're designed to do. The silicone lining inside each strap grips your pants, and the two straps hold the pad over your kneecap instead of relying on one tight band. If they still slide, start a return within 30 days of delivery.</p>"
           }
         },
         "q2": {
@@ -227,14 +227,14 @@
           "type": "question",
           "settings": {
             "question": "How much is shipping?",
-            "answer": "<p>Shipping is free to anywhere in the US. You'll get a tracking link by email as soon as your order ships.</p>"
+            "answer": "<p>Standard US shipping is $8, or free on orders of $70 or more (the 2-pair pack qualifies). You'll get a tracking link by email when your order ships.</p>"
           }
         },
         "q6": {
           "type": "question",
           "settings": {
             "question": "What's your return policy?",
-            "answer": "<p>You have 30 days from delivery to return them for a full refund, even if you've worn them on the job. Send us a message with your order number to start a return.</p>"
+            "answer": "<p>Start a return within 30 days of delivery. Send us your order number through the contact page and we'll reply with return instructions.</p>"
           }
         }
       },

@@ -1,4 +1,5 @@
 {%- assign product = section.settings.product -%}
+{%- if product != blank or request.design_mode -%}
 <section class="section{% if section.settings.alt_background %} section--alt{% endif %}" id="{{ section.settings.anchor | default: section.id }}" data-product>
   <div class="page-width">
     {%- if product != blank -%}
@@ -46,6 +47,7 @@
     {%- endif -%}
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {

@@ -20,7 +20,7 @@
   </div>
 </section>
 
-{%- if section.blocks.size > 0 -%}
+{%- if section.blocks.size > 0 and section.settings.structured_data -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +44,8 @@
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Can't find what you're looking for? Send us a message.</p>" },
     { "type": "text", "id": "link_label", "label": "Link label", "default": "Contact us" },
     { "type": "url", "id": "link", "label": "Link" },
-    { "type": "checkbox", "id": "alt_background", "label": "Alternate background", "default": false }
+    { "type": "checkbox", "id": "alt_background", "label": "Alternate background", "default": false },
+    { "type": "checkbox", "id": "structured_data", "label": "Output FAQ structured data", "info": "Turn on for one FAQ section in the store, usually the FAQ page.", "default": false }
   ],
   "blocks": [
     {

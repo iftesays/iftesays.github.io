@@ -30,7 +30,8 @@
       </ul>
       <div class="cart-page__summary">
         <div class="cart-totals"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
-        <p class="cart-drawer__note">Free US shipping. Taxes calculated at checkout.</p>
+        {%- assign ship_threshold = settings.free_shipping_threshold | times: 100 -%}
+        <p class="cart-drawer__note">{% if ship_threshold == 0 or cart.total_price >= ship_threshold %}Free US shipping. {% endif %}Taxes calculated at checkout.</p>
         <div class="field">
           <label for="CartNote">Order notes (optional)</label>
           <textarea id="CartNote" name="note">{{ cart.note }}</textarea>

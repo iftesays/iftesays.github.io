@@ -23,8 +23,8 @@
           "settings": {
             "title": "Gel cushion over foam",
             "text": "Gel spreads your weight across the pad instead of the point of your kneecap. High-density foam underneath keeps it supported through a full day.",
-            "x": 40,
-            "y": 71
+            "x": 50,
+            "y": 24
           }
         },
         "h3": {
@@ -32,7 +32,7 @@
           "settings": {
             "title": "Two adjustable straps",
             "text": "One strap sits above the knee and one below, so neither has to be cranked tight and nothing presses into the back of your knee.",
-            "x": 77,
+            "x": 71,
             "y": 34
           }
         },
@@ -64,7 +64,7 @@
       "settings": {
         "icon": "return",
         "heading": "30-day returns",
-        "text": "<p>Wear them on the job for a full week. If they slide down, pinch, or just aren't right for you, contact us within 30 days of delivery for a full refund.</p>",
+        "text": "<p>Try them on the job. If they don't work for you, start a return within 30 days of delivery for a refund.</p>",
         "button_label": "How returns work",
         "button_link": "/pages/faq",
         "background": "alt"

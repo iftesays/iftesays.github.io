@@ -9,7 +9,7 @@
           "type": "menu",
           "settings": {
             "heading": "Shop",
-            "menu": "holdfast-main"
+            "menu": "holdfast-footer-shop"
           }
         },
         "help": {

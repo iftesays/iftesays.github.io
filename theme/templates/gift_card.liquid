@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your {{ gift_card.initial_value | money }} gift card · {{ shop.name }}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
   {% render 'css-variables' %}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>

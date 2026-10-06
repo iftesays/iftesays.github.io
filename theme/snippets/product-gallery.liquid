@@ -1,7 +1,8 @@
 {%- comment -%}
   Product media gallery. Shows product photos/videos when the product has
   media, otherwise a set of technical drawings.
-  Usage: {% render 'product-gallery', product: product, uid: section.id %}
+  Usage: {% render 'product-gallery', product: product, uid: section.id, lcp: true %}
+  Pass lcp: true only where the gallery is the main image above the fold.
 {%- endcomment -%}
 {%- assign has_media = false -%}
 {%- if product.media.size > 0 -%}{%- assign has_media = true -%}{%- endif -%}
@@ -16,15 +17,12 @@
           <div class="gallery__slide{% if forloop.first %} is-active{% endif %}" data-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} of {{ count }}">
             {%- case media.media_type -%}
               {%- when 'image' -%}
-                {%- liquid
-                  assign alt = media.alt | default: product.title
-                  if forloop.first
-                    assign loading = 'eager'
-                  else
-                    assign loading = 'lazy'
-                  endif
-                -%}
-                {{ media | image_url: width: 1600 | image_tag: loading: loading, widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 58vw, 100vw', alt: alt }}
+                {%- assign alt = media.alt | default: product.title -%}
+                {%- if forloop.first and lcp -%}
+                  {{ media | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 900, 1200, 1600', sizes: '(min-width: 1320px) 700px, (min-width: 990px) 53vw, calc(100vw - 40px)', alt: alt }}
+                {%- else -%}
+                  {{ media | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600', sizes: '(min-width: 1320px) 700px, (min-width: 990px) 53vw, calc(100vw - 40px)', alt: alt }}
+                {%- endif -%}
               {%- when 'video' -%}
                 {{ media | video_tag: image_size: '1600x', autoplay: false, loop: true, controls: true, muted: true, playsinline: true }}
               {%- when 'external_video' -%}

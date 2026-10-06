@@ -5,7 +5,7 @@
       <button type="button" class="header__icon header__menu-toggle" data-drawer-open="menu" aria-controls="MenuDrawer" aria-expanded="false" aria-label="Open menu">
         {% render 'icon', name: 'menu' %}
       </button>
-      <a href="{{ routes.root_url }}" class="logo" aria-label="{{ shop.name }}, home">
+      <a href="{{ routes.root_url }}" class="logo" aria-label="{{ section.settings.wordmark | default: shop.name }}, home">
         {%- if section.settings.logo != blank -%}
           {%- assign logo_alt = section.settings.logo.alt | default: shop.name -%}
           {%- assign logo_style = 'width: ' | append: section.settings.logo_width | append: 'px' -%}

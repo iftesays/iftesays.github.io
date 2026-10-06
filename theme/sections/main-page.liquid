@@ -1,4 +1,4 @@
-<div class="section{% if section.settings.compact %} section--tight-top{% endif %}" style="padding-bottom: {% if section.settings.compact %}0{% else %}var(--section-space){% endif %}">
+<div class="section" style="padding-top: 48px; padding-bottom: {% if section.settings.compact %}0{% else %}var(--section-space){% endif %}">
   <div class="page-width page-width--narrow page-content">
     <h1>{{ page.title }}</h1>
     {%- if page.content != blank -%}<div class="rte" style="font-size: 1.125rem">{{ page.content }}</div>{%- endif -%}

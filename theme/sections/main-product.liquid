@@ -8,7 +8,7 @@
 <section class="section section--tight-top" data-product style="padding-top: 32px">
   <div class="page-width product">
     <div class="product__media">
-      {% render 'product-gallery', product: product, uid: section.id %}
+      {% render 'product-gallery', product: product, uid: section.id, lcp: true %}
     </div>
 
     <div class="product__info">
@@ -56,6 +56,9 @@
             </details>
             {%- assign next_index = forloop.index0 | plus: 1 -%}
             {%- if forloop.last or section.blocks[next_index].type != 'collapsible' -%}</div>{%- endif -%}
+
+          {%- when '@app' -%}
+            <div {{ block.shopify_attributes }}>{% render block %}</div>
         {%- endcase -%}
       {%- endfor -%}
     </div>
@@ -75,7 +78,7 @@
       <strong>{{ product.title }}</strong>
       <span>{% unless product.has_only_default_variant %}<span data-sticky-variant>{{ current.title }}</span> · {% endunless %}<span data-sticky-price>{{ current.price | money }}</span></span>
     </div>
-    <button type="button" class="btn" data-sticky-add tabindex="-1">Add to cart</button>
+    <button type="button" class="btn" data-sticky-add tabindex="-1" {% unless current.available %}disabled{% endunless %}>{% if current.available %}Add to cart{% else %}Sold out{% endif %}</button>
   </div>
 </div>
 
@@ -147,7 +150,8 @@
         { "type": "richtext", "id": "content", "label": "Custom text" },
         { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
       ]
-    }
+    },
+    { "type": "@app" }
   ]
 }
 {% endschema %}

@@ -56,6 +56,7 @@
       if (slides.length < 2) return;
       var index = 0;
       var paused = false;
+      var stopped = false;
       function show(i) {
         index = (i + slides.length) % slides.length;
         slides.forEach(function (s, n) {
@@ -65,14 +66,14 @@
           s.inert = !on;
         });
       }
-      function tick() { if (!paused && !document.hidden && !reduceMotion) show(index + 1); }
+      function tick() { if (!stopped && !paused && !document.hidden && !reduceMotion) show(index + 1); }
       bar._timer = setInterval(tick, 5000);
-      $('[data-announcement-prev]', bar).addEventListener('click', function () { show(index - 1); });
-      $('[data-announcement-next]', bar).addEventListener('click', function () { show(index + 1); });
+      // Any deliberate interaction stops the rotation for good (WCAG 2.2.2).
+      $('[data-announcement-prev]', bar).addEventListener('click', function () { stopped = true; show(index - 1); });
+      $('[data-announcement-next]', bar).addEventListener('click', function () { stopped = true; show(index + 1); });
       bar.addEventListener('mouseenter', function () { paused = true; });
       bar.addEventListener('mouseleave', function () { paused = false; });
-      bar.addEventListener('focusin', function () { paused = true; });
-      bar.addEventListener('focusout', function () { paused = false; });
+      bar.addEventListener('focusin', function () { stopped = true; });
       bar._show = function (i) { paused = true; show(i); };
       bar._resume = function () { paused = false; };
       show(0);
@@ -182,7 +183,8 @@
   function refreshCart(open, opener) {
     var drawer = $('[data-cart-drawer-inner]');
     var focused = document.activeElement;
-    var focusLabel = drawer && drawer.contains(focused) ? focused.getAttribute('aria-label') : null;
+    var hadFocus = !!(drawer && drawer.contains(focused));
+    var focusLabel = hadFocus ? (focused.getAttribute('aria-label') || focused.textContent.trim()) : null;
     return fetch(root + '?section_id=cart-drawer', { credentials: 'same-origin' })
       .then(function (r) { return r.text(); })
       .then(function (html) {
@@ -193,8 +195,8 @@
           current.innerHTML = fresh.innerHTML;
           current.setAttribute('data-item-count', fresh.getAttribute('data-item-count'));
           setCartCount(parseInt(fresh.getAttribute('data-item-count'), 10) || 0);
-          if (focusLabel) {
-            var match = $$('[aria-label]', current).filter(function (n) { return n.getAttribute('aria-label') === focusLabel; })[0];
+          if (hadFocus) {
+            var match = $$('button, a', current).filter(function (n) { return (n.getAttribute('aria-label') || n.textContent.trim()) === focusLabel; })[0];
             (match || $('[data-drawer-close]', current)).focus();
           }
         }
@@ -227,17 +229,20 @@
   }
 
   document.addEventListener('click', function (e) {
+    var panel = $('.cart-drawer');
     var change = e.target.closest('[data-line-change]');
     if (change) {
       e.preventDefault();
+      if (panel && panel.classList.contains('is-busy')) return;
       var qty = parseInt(change.getAttribute('data-quantity'), 10);
-      busy(postJSON('cart/change.js', { line: parseInt(change.getAttribute('data-line-change'), 10), quantity: qty }),
+      busy(postJSON('cart/change.js', { id: change.getAttribute('data-line-change'), quantity: qty }),
         qty === 0 ? 'Removed from cart' : 'Quantity updated to ' + qty);
       return;
     }
     var upgrade = e.target.closest('[data-upgrade-to]');
     if (upgrade) {
       e.preventDefault();
+      if (panel && panel.classList.contains('is-busy')) return;
       upgrade.disabled = true;
       var updates = {};
       updates[upgrade.getAttribute('data-upgrade-from')] = 0;
@@ -281,6 +286,7 @@
         if (saveEl) { saveEl.textContent = save ? 'Save ' + save + '%' : ''; saveEl.hidden = !save; }
 
         if (isMain) {
+          $$('[data-sticky-add]').forEach(function (b) { b.disabled = !available; b.textContent = available ? 'Add to cart' : 'Sold out'; });
           $$('[data-sticky-price]').forEach(function (el) { el.textContent = price; });
           $$('[data-sticky-variant]').forEach(function (el) { el.textContent = input.getAttribute('data-title') || ''; });
           if (fromChange && input.type === 'radio' && window.history.replaceState) {
@@ -303,16 +309,25 @@
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
+        var viaSticky = form._opener;
+        form._opener = null;
+        if (form._busy) return;
+        form._busy = true;
         if (button) { button.classList.add('is-loading'); button.setAttribute('aria-disabled', 'true'); }
         if (message) { message.hidden = true; message.textContent = ''; }
-        var opener = e.submitter || button;
+        var opener = viaSticky || e.submitter || button;
         fetch(root + 'cart/add.js', { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }, credentials: 'same-origin' })
           .then(function (r) { return r.json().then(function (json) { if (!r.ok) throw new Error(json.description || json.message || "Couldn't add to cart. Please try again."); return json; }); })
           .then(function () { announce('Added to cart'); return refreshCart(true, opener); })
           .catch(function (err) {
-            if (message) { message.textContent = err.message; message.hidden = false; }
+            if (message) {
+              message.textContent = err.message;
+              message.hidden = false;
+              if (viaSticky) message.scrollIntoView({ block: 'center' });
+            }
           })
           .then(function () {
+            form._busy = false;
             if (button) { button.classList.remove('is-loading'); button.removeAttribute('aria-disabled'); }
           });
       });
@@ -334,18 +349,24 @@
       bar.classList.toggle('is-visible', show);
       bar.setAttribute('aria-hidden', show ? 'false' : 'true');
       bar.inert = !show;
+      // Keep focused elements from hiding behind the bar.
+      document.documentElement.style.scrollPaddingBottom = show ? (bar.offsetHeight + 16) + 'px' : '';
     }
+    // The extended bottom margin makes the state flip exactly when the button
+    // crosses the top of the viewport, even after a jump (anchor links, restore).
     new IntersectionObserver(function (entries) {
       var e = entries[0];
       pastButton = !e.isIntersecting && e.boundingClientRect.top < 0;
       sync();
-    }).observe(anchor);
+    }, { rootMargin: '0px 0px 10000px 0px' }).observe(anchor);
     if (footer) new IntersectionObserver(function (entries) { footerVisible = entries[0].isIntersecting; sync(); }).observe(footer);
     var add = $('[data-sticky-add]', bar);
     if (add) {
       add.removeAttribute('tabindex');
       add.addEventListener('click', function () {
+        if (anchor.disabled) return;
         var form = anchor.closest('form');
+        form._opener = add;
         if (form.requestSubmit) form.requestSubmit(anchor);
         else form.dispatchEvent(new Event('submit', { cancelable: true }));
       });
@@ -364,8 +385,9 @@
       var counter = $('[data-counter]', gallery);
       var viewport = $('.gallery__viewport', gallery);
       var index = 0;
-      function go(i) {
+      function go(i, silent) {
         index = (i + slides.length) % slides.length;
+        if (!silent) announce('Image ' + (index + 1) + ' of ' + slides.length);
         slides.forEach(function (s, n) {
           var on = n === index;
           s.classList.toggle('is-active', on);
@@ -397,7 +419,7 @@
         if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
         startX = null;
       });
-      go(0);
+      go(0, true);
     });
   }
 
@@ -453,7 +475,8 @@
       if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
       if (next) next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
       track.addEventListener('scroll', function () { window.requestAnimationFrame(sync); }, { passive: true });
-      window.addEventListener('resize', sync);
+      if ('ResizeObserver' in window) new ResizeObserver(sync).observe(track);
+      else window.addEventListener('resize', sync);
       sync();
     });
   }
@@ -528,7 +551,11 @@
   });
 
   // Theme editor
-  document.addEventListener('shopify:section:load', function (e) { init(e.target); });
+  document.addEventListener('shopify:section:load', function (e) {
+    init(e.target);
+    if ($('[data-sticky-atc]', e.target)) safe(initStickyAtc);
+    if (e.target.classList && e.target.classList.contains('section-header')) safe(initHeader);
+  });
   document.addEventListener('shopify:section:unload', function (e) {
     $$('[data-announcement]', e.target).forEach(function (bar) { if (bar._timer) clearInterval(bar._timer); });
   });

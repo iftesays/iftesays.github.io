@@ -8,14 +8,14 @@
         "m1": {
           "type": "message",
           "settings": {
-            "text": "Free US shipping and 30-day returns",
+            "text": "Free US shipping on orders over $70",
             "link": ""
           }
         },
         "m2": {
           "type": "message",
           "settings": {
-            "text": "2 pairs for $109.99. Save $19.99",
+            "text": "2 pairs for $109.99, with free shipping",
             "link": "/products/holdfast-anti-slip-work-knee-pads?variant=67657851437269"
           }
         }
