@@ -1,0 +1,15 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_ink": "#111315",
+      "color_paper": "#f1eee6",
+      "color_accent": "#ff5f1f",
+      "color_signal": "#d7ff3a",
+      "free_shipping_threshold": 0,
+      "upsell_enabled": true,
+      "upsell_from": "1 Pair",
+      "upsell_to": "2 Pairs"
+    }
+  }
+}

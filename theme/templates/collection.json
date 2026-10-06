@@ -1,0 +1,1 @@
+{ "sections": { "main": { "type": "main-collection", "settings": { "per_page": 12 } }, "cta": { "type": "cta-banner", "settings": { "heading": "Stop pulling your knee pads up.", "text": "Pads that stay put and do not cut off circulation.", "button_label": "Shop Holdfast", "button_link": "/products/holdfast-anti-slip-work-knee-pads" } } }, "order": ["main", "cta"] }

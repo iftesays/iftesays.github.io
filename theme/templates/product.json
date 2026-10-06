@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "ticks": { "type": "ticks", "settings": { "lines": "Anti-slip silicone lining grips your pants\nSplit straps: no tourniquet behind the knee\nGel cushion over high-density foam\nHard cap slides on tile, pivots on subfloor" } },
+        "buy": { "type": "buy_box", "settings": { "show_payment_button": true } },
+        "ship": { "type": "note", "settings": { "icon": "truck", "text": "<p><strong>Ships in 1–2 business days.</strong> Free US shipping on every order.</p>" } },
+        "details": { "type": "collapsible", "settings": { "heading": "Details & specs", "use_description": true, "open": false } },
+        "fit": { "type": "collapsible", "settings": { "heading": "Fit & sizing", "use_description": false, "content": "<p>One size fits most adults. Both straps adjust, and they fit over jeans, work pants or bibs. Snug the straps enough to hold, not to squeeze. The grip lining does the holding.</p>", "open": false } },
+        "returns": { "type": "collapsible", "settings": { "heading": "30-day stay-up guarantee", "use_description": false, "content": "<p>Wear them on the job. If they slide down or leave your legs numb, contact us within 30 days of delivery for a refund.</p>", "open": false } }
+      },
+      "block_order": ["ticks", "buy", "ship", "details", "fit", "returns"],
+      "settings": { "subtitle": "Anti-slip retention. Gel cushion. Hard cap. Built for the kneeling trades." }
+    },
+    "ticker": { "type": "ticker", "settings": { "items": "Stays up, No tourniquet, Gel cushion, Hard cap, Free US shipping, 30-day guarantee", "style": "ink", "tilt": false, "speed": 30 } },
+    "slip": { "type": "slip-test", "settings": { "anchor": "slip-test", "kicker": "The stand-up test", "heading": "Kneel. Stand. Repeat all day.", "text": "<p>Watch what happens every time you get off your knees.</p>" } },
+    "layers": {
+      "type": "layers",
+      "blocks": {
+        "l1": { "type": "layer", "settings": { "title": "Hard shell cap", "text": "Takes the abuse from concrete, gravel and screws so the cushion underneath doesn't." } },
+        "l2": { "type": "layer", "settings": { "title": "Gel cushion", "text": "Spreads your weight across the whole pad instead of the point of your kneecap." } },
+        "l3": { "type": "layer", "settings": { "title": "High-density foam", "text": "Keeps its shape through long days instead of packing down flat in a month." } },
+        "l4": { "type": "layer", "settings": { "title": "Grip lining + split straps", "text": "Grips your pants and holds the pad over the joint without a tight band behind the knee." } }
+      },
+      "block_order": ["l1", "l2", "l3", "l4"],
+      "settings": { "anchor": "how", "kicker": "How it works", "heading": "Four layers. Each with one job." }
+    },
+    "compare": {
+      "type": "comparison",
+      "blocks": {
+        "r1": { "type": "row", "settings": { "feature": "Stays up when you stand", "us": "Anti-slip lining holds it", "them": "Slides toward the ankle" } },
+        "r2": { "type": "row", "settings": { "feature": "Strap pressure", "us": "Two wide straps, above & below", "them": "One tight band behind the knee" } },
+        "r3": { "type": "row", "settings": { "feature": "Cushion", "us": "Gel over high-density foam", "them": "Foam only, packs down" } },
+        "r4": { "type": "row", "settings": { "feature": "Cap", "us": "Hard shell, slides & pivots", "them": "Soft or thin plastic" } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4"],
+      "settings": { "kicker": "Side by side", "heading": "Not another strap-and-hope pad", "us_label": "Holdfast", "them_label": "Typical strap pads" }
+    },
+    "reviews": { "type": "reviews", "settings": { "anchor": "reviews", "kicker": "Reviews", "heading": "From the job site" } },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "a1": { "type": "question", "settings": { "question": "Will they really stay up?", "answer": "<p>That's what they're designed for. The silicone lining grips your pants and the two straps hold the pad over the joint. If they slide on you anyway, the guarantee covers it.</p>" } },
+        "a2": { "type": "question", "settings": { "question": "Do they cut off circulation?", "answer": "<p>The straps sit above and below the knee instead of across the back of it, and they're wide, so the pressure is spread out.</p>" } },
+        "a3": { "type": "question", "settings": { "question": "How long does shipping take?", "answer": "<p>Orders ship in 1–2 business days with free US shipping and a tracking link by email.</p>" } }
+      },
+      "block_order": ["a1", "a2", "a3"],
+      "settings": { "anchor": "faq", "kicker": "FAQ", "heading": "Quick answers", "open_first": false, "dark": false }
+    }
+  },
+  "order": ["main", "ticker", "slip", "layers", "compare", "reviews", "faq"]
+}

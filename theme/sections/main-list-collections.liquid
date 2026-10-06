@@ -1,0 +1,29 @@
+<section class="section collection-hero">
+  <div class="wrap">
+    <p class="label-mono label-mono--accent">Shop</p>
+    <h1 class="h1">Collections</h1>
+  </div>
+</section>
+<section class="section section--tight">
+  <div class="wrap grid grid--cards">
+    {%- for collection in collections -%}
+      <a href="{{ collection.url }}" class="card collection-card reveal">
+        <div class="card__media">
+          {%- if collection.featured_image -%}
+            {{ collection.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', alt: collection.title }}
+          {%- else -%}
+            {% render 'product-art', key: collection.id %}
+          {%- endif -%}
+        </div>
+        <div class="card__body">
+          <h2 class="card__title">{{ collection.title }}</h2>
+          <span class="label-mono">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</span>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Collections list", "class": "section-list-collections", "settings": [] }
+{% endschema %}

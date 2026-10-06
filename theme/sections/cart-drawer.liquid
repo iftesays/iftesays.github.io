@@ -1,0 +1,116 @@
+{%- comment -%}
+  Slide-out cart. Re-rendered through the Section Rendering API after every
+  cart change (see theme.js), so it always reflects the live cart.
+{%- endcomment -%}
+{%- liquid
+  assign threshold = settings.free_shipping_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  if threshold > 0
+    assign progress = cart.total_price | times: 100 | divided_by: threshold
+    if progress > 100
+      assign progress = 100
+    endif
+  else
+    assign progress = 100
+  endif
+-%}
+<div class="drawer drawer--right" id="CartDrawer" data-drawer="cart" aria-hidden="true">
+  <div class="drawer__scrim" data-drawer-close></div>
+  <div class="drawer__panel cart-drawer" role="dialog" aria-modal="true" aria-label="Your cart" data-cart-drawer data-item-count="{{ cart.item_count }}">
+    <div class="drawer__head">
+      <span class="cart-drawer__title">Your cart <span class="label-mono">({{ cart.item_count }})</span></span>
+      <button type="button" class="header__icon" data-drawer-close aria-label="Close cart">{% render 'icon', name: 'close' %}</button>
+    </div>
+
+    <div class="ship-meter">
+      {%- if threshold == 0 or remaining <= 0 -%}
+        <p>{% render 'icon', name: 'truck' %} <strong>Free shipping</strong> unlocked</p>
+      {%- else -%}
+        <p>{% render 'icon', name: 'truck' %} You're <strong>{{ remaining | money }}</strong> away from free shipping</p>
+      {%- endif -%}
+      <div class="ship-meter__bar"><span style="width: {{ progress }}%"></span></div>
+    </div>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-empty">
+        {% render 'product-art', key: 'empty-cart' %}
+        <p class="h3">Your cart is empty.</p>
+        <p>Your knees have noticed.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--accent">Shop knee pads</a>
+      </div>
+    {%- else -%}
+      <ul class="cart-items">
+        {%- for item in cart.items -%}
+          <li class="cart-item">
+            <a href="{{ item.url }}" class="cart-item__media">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: item.title }}
+              {%- else -%}
+                {% render 'product-art', key: item.key %}
+              {%- endif -%}
+            </a>
+            <div class="cart-item__info">
+              <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
+              {%- unless item.product.has_only_default_variant -%}
+                <span class="label-mono">{{ item.variant.title }}</span>
+              {%- endunless -%}
+              <div class="cart-item__row">
+                <div class="qty qty--small">
+                  <button type="button" class="qty__btn" data-line-change="{{ forloop.index }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="Decrease">{% render 'icon', name: 'minus' %}</button>
+                  <span class="qty__value">{{ item.quantity }}</span>
+                  <button type="button" class="qty__btn" data-line-change="{{ forloop.index }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase">{% render 'icon', name: 'plus' %}</button>
+                </div>
+                <span class="cart-item__price">
+                  {%- if item.original_line_price > item.final_line_price -%}<s>{{ item.original_line_price | money }}</s>{%- endif -%}
+                  {{ item.final_line_price | money }}
+                </span>
+              </div>
+              <button type="button" class="link-btn" data-line-change="{{ forloop.index }}" data-qty="0">Remove</button>
+            </div>
+          </li>
+
+          {%- if settings.upsell_enabled and item.variant.title == settings.upsell_from -%}
+            {%- for v in item.product.variants -%}
+              {%- if v.title == settings.upsell_to and v.available -%}
+                {%- assign extra = v.price | times: item.quantity | minus: item.final_line_price -%}
+                <li class="upsell">
+                  <div>
+                    <span class="label-mono">Upgrade</span>
+                    <p><strong>Switch to {{ v.title }}</strong> for {{ extra | money }} more. {{ settings.upsell_text }}</p>
+                  </div>
+                  <button type="button" class="btn btn--ink btn--small" data-upgrade-line="{{ forloop.parentloop.index }}" data-upgrade-to="{{ v.id }}" data-upgrade-qty="{{ item.quantity }}">Upgrade</button>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      <div class="cart-drawer__foot">
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          <ul class="cart-discounts">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <li>{{ discount.title }} (−{{ discount.total_allocated_amount | money }})</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        <div class="cart-total">
+          <span>Subtotal</span>
+          <strong>{{ cart.total_price | money_with_currency }}</strong>
+        </div>
+        <p class="cart-note">Taxes calculated at checkout. 30-day stay-up guarantee.</p>
+        <form action="{{ routes.cart_url }}" method="post">
+          <button type="submit" name="checkout" class="btn btn--accent btn--block btn--big">Checkout {% render 'icon', name: 'arrow' %}</button>
+        </form>
+        <a href="{{ routes.cart_url }}" class="link-btn cart-drawer__view">View full cart</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": []
+}
+{% endschema %}

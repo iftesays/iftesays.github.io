@@ -1,0 +1,50 @@
+<section class="section">
+  <div class="wrap wrap--mid">
+    <p class="label-mono label-mono--accent">Cart</p>
+    <h1 class="h1">Your cart</h1>
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" class="cart-page">
+        <ul class="cart-items cart-items--page">
+          {%- for item in cart.items -%}
+            <li class="cart-item">
+              <a href="{{ item.url }}" class="cart-item__media">
+                {%- if item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: item.title }}{%- else -%}{% render 'product-art', key: item.key %}{%- endif -%}
+              </a>
+              <div class="cart-item__info">
+                <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}<span class="label-mono">{{ item.variant.title }}</span>{%- endunless -%}
+                <div class="cart-item__row">
+                  <label class="visually-hidden" for="Qty-{{ forloop.index }}">Quantity</label>
+                  <input class="qty__input qty__input--boxed" id="Qty-{{ forloop.index }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+                  <span class="cart-item__price">{{ item.final_line_price | money }}</span>
+                </div>
+                <a href="{{ item.url_to_remove }}" class="link-btn">Remove</a>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="cart-page__foot">
+          <label for="CartNote" class="label-mono">Order note</label>
+          <textarea id="CartNote" name="note" rows="3" placeholder="Anything we should know?">{{ cart.note }}</textarea>
+          <div class="cart-total"><span>Subtotal</span><strong>{{ cart.total_price | money_with_currency }}</strong></div>
+          <p class="cart-note">Taxes calculated at checkout. Free US shipping.</p>
+          <div class="cart-page__btns">
+            <button type="submit" name="update" class="btn btn--ghost">Update cart</button>
+            <button type="submit" name="checkout" class="btn btn--accent btn--big">Checkout {% render 'icon', name: 'arrow' %}</button>
+          </div>
+          {%- if additional_checkout_buttons -%}<div class="additional-checkout">{{ content_for_additional_checkout_buttons }}</div>{%- endif -%}
+        </div>
+      </form>
+    {%- else -%}
+      <div class="cart-empty">
+        {% render 'product-art', key: 'cart-empty' %}
+        <p class="h3">Your cart is empty.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--accent">Shop knee pads</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Cart", "class": "section-main-cart", "settings": [] }
+{% endschema %}

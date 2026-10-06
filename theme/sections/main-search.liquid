@@ -1,0 +1,33 @@
+<section class="section">
+  <div class="wrap">
+    <p class="label-mono label-mono--accent">Search</p>
+    <h1 class="h1">{% if search.performed %}Results for “{{ search.terms | escape }}”{% else %}Search{% endif %}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search the store" aria-label="Search">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit" class="btn btn--accent">{% render 'icon', name: 'search' %} Search</button>
+    </form>
+    {%- if search.performed -%}
+      {%- paginate search.results by 12 -%}
+        {%- if search.results_count == 0 -%}
+          <p class="empty">No results. Try “knee pads”.</p>
+        {%- else -%}
+          <div class="grid grid--cards">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'product-card', product: item %}
+              {%- else -%}
+                <a href="{{ item.url }}" class="card card--text reveal"><div class="card__body"><span class="label-mono">{{ item.object_type }}</span><h2 class="card__title">{{ item.title }}</h2><p>{{ item.content | strip_html | truncatewords: 24 }}</p></div></a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- if paginate.pages > 1 -%}<nav class="pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Search", "class": "section-main-search", "settings": [] }
+{% endschema %}

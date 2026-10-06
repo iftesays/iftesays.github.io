@@ -1,0 +1,35 @@
+<section class="stats-band{% if section.settings.style == 'accent' %} stats-band--accent{% endif %}">
+  <div class="wrap stats">
+    {%- for block in section.blocks -%}
+      <div class="stat reveal" style="--d: {{ forloop.index0 | times: 80 }}ms" {{ block.shopify_attributes }}>
+        <strong data-count-to="{{ block.settings.number }}">{{ block.settings.number }}</strong><em>{{ block.settings.suffix }}</em>
+        <span>{{ block.settings.label }}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Stats band",
+  "class": "section-stats",
+  "settings": [
+    { "type": "select", "id": "style", "label": "Style", "default": "ink", "options": [
+      { "value": "ink", "label": "Dark" },
+      { "value": "accent", "label": "Orange" }
+    ] }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "number", "id": "number", "label": "Number", "default": 4 },
+        { "type": "text", "id": "suffix", "label": "Suffix" },
+        { "type": "text", "id": "label", "label": "Label", "default": "layers of protection" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Stats band", "blocks": [{ "type": "stat" }, { "type": "stat" }, { "type": "stat" }] }]
+}
+{% endschema %}

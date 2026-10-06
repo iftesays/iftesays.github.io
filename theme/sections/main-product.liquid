@@ -1,0 +1,161 @@
+{%- assign current = product.selected_or_first_available_variant -%}
+<section class="product-main" data-product-main>
+  <div class="wrap product-main__grid">
+    <div class="gallery" data-gallery>
+      <div class="gallery__stage">
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            <div class="gallery__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}">
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {%- if forloop.first -%}{%- assign loading = 'eager' -%}{%- else -%}{%- assign loading = 'lazy' -%}{%- endif -%}
+                  {%- assign alt = media.alt | default: product.title -%}
+                  {{ media | image_url: width: 1400 | image_tag: loading: loading, widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 55vw, 100vw', alt: alt }}
+                {%- when 'video', 'external_video' -%}
+                  {{ media | media_tag: image_size: '1400x', autoplay: false, loop: true, controls: true, muted: true }}
+                {%- else -%}
+                  {{ media | media_tag }}
+              {%- endcase -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="gallery__slide is-active" data-slide="0">{% render 'product-art', key: 'g1' %}</div>
+          <div class="gallery__slide" data-slide="1">{% render 'product-art', key: 'g2', pair: true %}</div>
+        {%- endif -%}
+        <span class="sticker sticker--tl">Stays up</span>
+      </div>
+      {%- assign thumb_count = product.media.size -%}
+      {%- if thumb_count == 0 -%}{%- assign thumb_count = 2 -%}{%- endif -%}
+      {%- if thumb_count > 1 -%}
+        <div class="gallery__thumbs" role="tablist">
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media -%}
+              <button type="button" class="gallery__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">
+                {{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            <button type="button" class="gallery__thumb is-active" data-thumb="0" aria-label="Show single pad">{% render 'product-art', key: 't1' %}</button>
+            <button type="button" class="gallery__thumb" data-thumb="1" aria-label="Show pair">{% render 'product-art', key: 't2', pair: true %}</button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="product-info">
+      <nav class="crumbs label-mono" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <a href="{{ routes.all_products_collection_url }}">Shop</a></nav>
+      <h1 class="product-info__title">{{ product.title }}</h1>
+      <div class="product-info__price" data-main-price>
+        {%- if current.compare_at_price > current.price -%}<s data-compare-display>{{ current.compare_at_price | money }}</s>{%- else -%}<s data-compare-display hidden></s>{%- endif -%}
+        <strong data-price-display>{{ current.price | money }}</strong>
+        <span class="tag-free">Free shipping</span>
+      </div>
+      {%- if section.settings.subtitle != blank -%}<p class="product-info__sub">{{ section.settings.subtitle }}</p>{%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'ticks' -%}
+            <ul class="ticks" {{ block.shopify_attributes }}>
+              {%- assign ticks = block.settings.lines | newline_to_br | split: '<br />' -%}
+              {%- for t in ticks -%}{%- assign tt = t | strip -%}{%- if tt != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ tt }}</span></li>{%- endif -%}{%- endfor -%}
+            </ul>
+          {%- when 'buy_box' -%}
+            <div id="buy" {{ block.shopify_attributes }}>{% render 'buy-box', product: product, section: section, show_payment_button: block.settings.show_payment_button %}</div>
+          {%- when 'collapsible' -%}
+            <details class="faq__item faq__item--flat" {{ block.shopify_attributes }} {% if block.settings.open %}open{% endif %}>
+              <summary><span>{{ block.settings.heading }}</span><i aria-hidden="true">{% render 'icon', name: 'plus' %}</i></summary>
+              <div class="faq__answer rte">
+                {%- if block.settings.use_description -%}{{ product.description }}{%- else -%}{{ block.settings.content }}{%- endif -%}
+              </div>
+            </details>
+          {%- when 'note' -%}
+            <div class="note" {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon %}<div class="rte">{{ block.settings.text }}</div></div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<div class="sticky-atc" data-sticky-atc aria-hidden="true">
+  <div class="wrap sticky-atc__inner">
+    <div class="sticky-atc__info">
+      <strong>{{ product.title }}</strong>
+      <span><span data-sticky-variant>{{ current.title }}</span> · <span data-sticky-price>{{ current.price | money }}</span></span>
+    </div>
+    <button type="button" class="btn btn--accent" data-sticky-add>Add to cart</button>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "description": {{ product.description | strip_html | json }},
+  "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+  {%- if product.featured_media -%}"image": [{{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }}],{%- endif -%}
+  "offers": [
+    {%- for variant in product.variants -%}
+    {
+      "@type": "Offer",
+      "sku": {{ variant.sku | json }},
+      "name": {{ variant.title | json }},
+      "price": {{ variant.price | divided_by: 100.0 | json }},
+      "priceCurrency": {{ cart.currency.iso_code | json }},
+      "availability": "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+      "url": "{{ request.origin }}{{ variant.url }}"
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "class": "section-main-product",
+  "settings": [
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Anti-slip retention. Gel cushion. Hard cap. Built for the kneeling trades." }
+  ],
+  "blocks": [
+    {
+      "type": "ticks",
+      "name": "Benefit list",
+      "limit": 1,
+      "settings": [
+        { "type": "textarea", "id": "lines", "label": "Lines (one per line)", "default": "Anti-slip silicone lining grips your pants\nSplit straps: no tourniquet behind the knee\nGel cushion over high-density foam\nHard cap slides on tile, pivots on subfloor" }
+      ]
+    },
+    {
+      "type": "buy_box",
+      "name": "Buy box",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_payment_button", "label": "Show dynamic checkout button", "default": true }
+      ]
+    },
+    {
+      "type": "note",
+      "name": "Note",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [
+          { "value": "truck", "label": "Truck" },
+          { "value": "shield", "label": "Shield" },
+          { "value": "lock", "label": "Lock" }
+        ] },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p><strong>Ships in 1–2 business days.</strong> Free US shipping on every order.</p>" }
+      ]
+    },
+    {
+      "type": "collapsible",
+      "name": "Collapsible tab",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Details" },
+        { "type": "checkbox", "id": "use_description", "label": "Show product description", "default": false },
+        { "type": "richtext", "id": "content", "label": "Content" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+      ]
+    }
+  ]
+}
+{% endschema %}

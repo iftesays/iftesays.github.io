@@ -1,0 +1,11 @@
+<section class="section page-sec">
+  <div class="wrap wrap--narrow">
+    <p class="label-mono label-mono--accent">{{ shop.name }}</p>
+    <h1 class="h1">{{ page.title }}</h1>
+    <div class="rte rte--lg">{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Page", "class": "section-main-page", "settings": [] }
+{% endschema %}

@@ -1,0 +1,79 @@
+{%- comment -%}
+  Pack selector + add to cart. Each variant is a selectable card.
+  Usage: {% render 'buy-box', product: product, section: section, show_payment_button: true %}
+{%- endcomment -%}
+{%- assign current = product.selected_or_first_available_variant -%}
+{%- assign form_id = 'product-form-' | append: section.id -%}
+
+<div class="buy-box" data-buy-box data-section="{{ section.id }}">
+  {%- form 'product', product, id: form_id, class: 'buy-form', novalidate: 'novalidate', data-product-form: '' -%}
+    <fieldset class="packs" {% if product.has_only_default_variant %}hidden{% endif %}>
+      <legend class="label-mono">{{ product.options.first | default: 'Pack' }}</legend>
+      {%- for variant in product.variants -%}
+        {%- liquid
+          assign savings = 0
+          if variant.compare_at_price > variant.price
+            assign savings = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | floor
+          endif
+        -%}
+        <label class="pack{% if variant.id == current.id %} is-selected{% endif %}{% unless variant.available %} is-unavailable{% endunless %}">
+          <input
+            type="radio"
+            name="id"
+            value="{{ variant.id }}"
+            {% if variant.id == current.id %}checked{% endif %}
+            {% unless variant.available %}disabled{% endunless %}
+            data-price="{{ variant.price | money | escape }}"
+            data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | escape }}{% endif %}"
+            data-available="{{ variant.available }}"
+            data-title="{{ variant.title | escape }}"
+          >
+          <span class="pack__radio" aria-hidden="true"></span>
+          <span class="pack__main">
+            <strong>{{ variant.title }}</strong>
+            <small>
+              {%- if variant.title contains '2' -%}One for the van, one for the bag
+              {%- elsif variant.title contains '3' -%}Kit out the crew
+              {%- else -%}For one tradesperson{%- endif -%}
+            </small>
+          </span>
+          <span class="pack__price">
+            {%- if variant.compare_at_price > variant.price -%}<s>{{ variant.compare_at_price | money }}</s>{%- endif -%}
+            <strong>{{ variant.price | money }}</strong>
+            {%- if savings > 0 -%}<em>Save {{ savings }}%</em>{%- endif -%}
+          </span>
+          {%- if savings > 0 -%}<span class="pack__badge">Best value</span>{%- endif -%}
+          {%- unless variant.available -%}<span class="pack__badge pack__badge--muted">Sold out</span>{%- endunless -%}
+        </label>
+      {%- endfor -%}
+    </fieldset>
+
+    {%- if product.has_only_default_variant -%}
+      <input type="hidden" name="id" value="{{ current.id }}">
+    {%- endif -%}
+
+    <div class="buy-row">
+      <div class="qty" data-qty>
+        <button type="button" class="qty__btn" data-qty-step="-1" aria-label="Decrease quantity">{% render 'icon', name: 'minus' %}</button>
+        <input class="qty__input" type="number" name="quantity" value="1" min="1" max="20" aria-label="Quantity">
+        <button type="button" class="qty__btn" data-qty-step="1" aria-label="Increase quantity">{% render 'icon', name: 'plus' %}</button>
+      </div>
+      <button type="submit" name="add" class="btn btn--accent btn--block" data-add-button {% unless current.available %}disabled{% endunless %}>
+        <span data-add-label>{% if current.available %}Add to cart — {{ current.price | money }}{% else %}Sold out{% endif %}</span>
+        <span class="spinner" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    {%- if show_payment_button -%}
+      <div class="payment-button">{{ form | payment_button }}</div>
+    {%- endif -%}
+
+    <p class="form-error" data-form-error role="alert" hidden></p>
+  {%- endform -%}
+
+  <ul class="trust-row">
+    <li>{% render 'icon', name: 'truck' %}<span>Free US shipping</span></li>
+    <li>{% render 'icon', name: 'shield' %}<span>30-day stay-up guarantee</span></li>
+    <li>{% render 'icon', name: 'lock' %}<span>Secure checkout</span></li>
+  </ul>
+</div>

@@ -1,0 +1,17 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "main-menu" } },
+        "help": { "type": "menu", "settings": { "heading": "Help", "menu": "footer" } },
+        "news": { "type": "newsletter", "settings": { "heading": "Job-site intel", "text": "Restocks, new gear, and no spam. Unsubscribe anytime." } }
+      },
+      "block_order": ["shop", "help", "news"],
+      "settings": { "wordmark": "HOLDFAST" }
+    }
+  },
+  "order": ["footer"]
+}

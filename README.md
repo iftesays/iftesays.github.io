@@ -8,6 +8,8 @@ A one-product e-commerce store. The landing page is hosted on GitHub Pages, and 
 | `assets/config.js` | **Edit this.** Shopify domain, variant IDs, prices, guarantee, support email |
 | `assets/store.js` | Pack selector and buy buttons (Shopify cart-permalink checkout) |
 | `assets/styles.css` | Styles |
+| `theme/` | **Holdfast Shopify theme** (Online Store 2.0): the full store design |
+| `shopify/holdfast-theme.zip` | The theme zipped for upload (Online Store → Themes → Add theme → Upload zip) |
 | `shopify/SETUP.md` | Step-by-step Shopify + Zendrop setup |
 | `shopify/product-description.html` | Product description to paste into Shopify |
 | `playbook/LAUNCH-PLAYBOOK.md` | Product brief, margin math, ad angles, UGC scripts, Meta test plan |

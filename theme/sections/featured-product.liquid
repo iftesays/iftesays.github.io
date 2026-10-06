@@ -1,0 +1,46 @@
+{%- assign product = section.settings.product -%}
+<section class="section featured" id="{{ section.settings.anchor | default: section.id }}">
+  <div class="wrap featured__grid">
+    <div class="featured__media reveal">
+      <div class="featured__frame">
+        <span class="sticker">{{ section.settings.sticker }}</span>
+        {%- if product.featured_media -%}
+          {{ product.featured_media | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600, 900, 1200', sizes: '(min-width: 990px) 50vw, 90vw' }}
+        {%- else -%}
+          {% render 'product-art', key: 'featured', pair: true %}
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="featured__info reveal">
+      <p class="label-mono label-mono--accent">{{ section.settings.kicker }}</p>
+      {%- if product != blank -%}
+        <h2 class="h1"><a href="{{ product.url }}">{{ product.title }}</a></h2>
+        <ul class="ticks">
+          {%- assign ticks = section.settings.ticks | newline_to_br | split: '<br />' -%}
+          {%- for t in ticks -%}{%- assign tt = t | strip -%}{%- if tt != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ tt }}</span></li>{%- endif -%}{%- endfor -%}
+        </ul>
+        {% render 'buy-box', product: product, section: section, show_payment_button: section.settings.show_payment_button %}
+        <a href="{{ product.url }}" class="link-arrow">Full details {% render 'icon', name: 'arrow' %}</a>
+      {%- else -%}
+        <h2 class="h1">Pick a product</h2>
+        <p>Choose a product for this section in the theme editor.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured product",
+  "class": "section-featured",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "shop" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The only pair you'll need" },
+    { "type": "text", "id": "sticker", "label": "Sticker text", "default": "Stays up" },
+    { "type": "textarea", "id": "ticks", "label": "Benefit lines (one per line)", "default": "Anti-slip silicone lining grips your pants\nSplit straps: no tourniquet behind the knee\nGel cushion over high-density foam\nHard cap slides on tile, pivots on subfloor" },
+    { "type": "checkbox", "id": "show_payment_button", "label": "Show dynamic checkout button", "default": true }
+  ],
+  "presets": [{ "name": "Featured product" }]
+}
+{% endschema %}

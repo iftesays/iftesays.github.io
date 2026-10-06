@@ -1,0 +1,56 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Holdfast",
+    "theme_version": "1.0.0",
+    "theme_author": "Holdfast",
+    "theme_documentation_url": "https://github.com/iftesays/iftesays.github.io",
+    "theme_support_url": "https://github.com/iftesays/iftesays.github.io"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "color_ink", "label": "Ink (dark)", "default": "#111315" },
+      { "type": "color", "id": "color_paper", "label": "Paper (light background)", "default": "#f1eee6" },
+      { "type": "color", "id": "color_accent", "label": "Accent (safety orange)", "default": "#ff5f1f" },
+      { "type": "color", "id": "color_signal", "label": "Signal (hi-vis highlight)", "default": "#d7ff3a" }
+    ]
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "32 × 32px .png recommended" },
+      { "type": "text", "id": "brand_tagline", "label": "Tagline", "default": "Built for the kneeling trades." }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "range",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "info": "Set to 0 if every order ships free.",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "$",
+        "default": 0
+      },
+      { "type": "header", "content": "Cart upgrade offer" },
+      { "type": "checkbox", "id": "upsell_enabled", "label": "Offer pack upgrade in cart", "default": true },
+      { "type": "text", "id": "upsell_from", "label": "Upgrade from variant title", "default": "1 Pair" },
+      { "type": "text", "id": "upsell_to", "label": "Upgrade to variant title", "default": "2 Pairs" },
+      { "type": "text", "id": "upsell_text", "label": "Upgrade message", "default": "One for the van, one for the bag." }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
+      { "type": "text", "id": "social_youtube", "label": "YouTube URL" }
+    ]
+  }
+]

@@ -1,0 +1,41 @@
+<section class="section" id="{{ section.settings.anchor | default: section.id }}">
+  <div class="wrap">
+    <div class="guarantee reveal">
+      <div class="seal" aria-hidden="true">
+        <svg viewBox="0 0 200 200" class="seal__ring">
+          <defs><path id="seal-{{ section.id }}" d="M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0"/></defs>
+          <text font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" letter-spacing="4" fill="currentColor">
+            <textPath href="#seal-{{ section.id }}">{{ section.settings.ring_text | upcase }} ✦ {{ section.settings.ring_text | upcase }} ✦ </textPath>
+          </text>
+        </svg>
+        <div class="seal__core"><strong>{{ section.settings.days }}</strong><span>days</span></div>
+      </div>
+      <div class="guarantee__copy">
+        <p class="label-mono label-mono--accent">{{ section.settings.kicker }}</p>
+        <h2 class="h1">{{ section.settings.heading }}</h2>
+        <div class="rte">{{ section.settings.text }}</div>
+        {%- if section.settings.button_link != blank -%}
+          <a href="{{ section.settings.button_link }}" class="btn btn--accent">{{ section.settings.button_label }} {% render 'icon', name: 'arrow' %}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Guarantee",
+  "class": "section-guarantee",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "guarantee" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Zero risk" },
+    { "type": "text", "id": "days", "label": "Days", "default": "30" },
+    { "type": "text", "id": "ring_text", "label": "Ring text", "default": "Stay-up guarantee" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Wear them on the job. If they slide, send them back." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Put them through a real work week. If they slide down or leave your legs numb, contact us within 30 days of delivery and we'll make it right with a refund.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Try them risk-free" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Guarantee" }]
+}
+{% endschema %}

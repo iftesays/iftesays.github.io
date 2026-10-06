@@ -1,0 +1,21 @@
+<section class="section section--tight">
+  <div class="wrap wrap--narrow">
+    {%- form 'contact', id: 'ContactForm', class: 'form-card' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-success">{% render 'icon', name: 'check' %} Thanks. We'll get back to you within one business day.</p>
+      {%- endif -%}
+      {%- if form.errors -%}<div class="form-error">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <div class="field-row">
+        <label class="field"><span>Name</span><input type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}"></label>
+        <label class="field"><span>Email *</span><input type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"></label>
+      </div>
+      <label class="field"><span>Order number (if you have one)</span><input type="text" name="contact[order]" value="{{ form.order }}"></label>
+      <label class="field"><span>Message *</span><textarea name="contact[body]" rows="6" required>{{ form.body }}</textarea></label>
+      <button type="submit" class="btn btn--accent">Send message {% render 'icon', name: 'arrow' %}</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Contact form", "class": "section-contact", "settings": [], "presets": [{ "name": "Contact form" }] }
+{% endschema %}

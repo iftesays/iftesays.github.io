@@ -1,0 +1,33 @@
+<section class="section collection-hero">
+  <div class="wrap">
+    <p class="label-mono label-mono--accent">Shop</p>
+    <h1 class="h1">{{ collection.title | default: 'All products' }}</h1>
+    {%- if collection.description != blank -%}<div class="rte section-head__text">{{ collection.description }}</div>{%- endif -%}
+  </div>
+</section>
+<section class="section section--tight">
+  <div class="wrap">
+    {%- paginate collection.products by section.settings.per_page -%}
+      {%- if collection.products.size > 0 -%}
+        <div class="grid grid--cards">
+          {%- for product in collection.products -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="empty">Nothing here yet. Check back soon.</p>
+      {%- endif -%}
+      {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="Pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "class": "section-main-collection",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 6, "max": 24, "step": 3, "default": 12 }
+  ]
+}
+{% endschema %}

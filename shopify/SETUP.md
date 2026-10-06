@@ -63,3 +63,18 @@ Commit and push. GitHub Pages redeploys, and the buy buttons now go straight to 
 
 - Install the **Facebook & Instagram** app in Shopify and connect your Meta pixel and Conversions API. That tracks purchases on the Shopify checkout.
 - To track landing-page views and Add to Cart too, add the Meta pixel base code to `index.html` `<head>` and fire `fbq('track','InitiateCheckout')` in the `buy()` function in `assets/store.js`.
+
+## 7. The Holdfast theme
+
+`theme/` is a custom Shopify theme built for this brand. It includes:
+
+- **Homepage:** animated hero with rotating headline and spec callouts, trades ticker, pain-point quotes, an animated "stand-up test" (typical pad slides down while Holdfast stays put), featured product with pack selector, features, count-up stats, an interactive layer diagram, a comparison table, guarantee seal, reviews, FAQ and a closing CTA.
+- **Product page:** gallery (uses an illustrated pad until you add photos), pack cards with savings badges, quantity, Add to cart and Buy it now, a sticky add-to-cart bar, collapsible details, then the stand-up test, layers, comparison, reviews and FAQ.
+- **Slide-out cart:** free-shipping meter, quantity controls, and a one-click "upgrade to 2 Pairs" offer.
+- About, FAQ and Contact page templates, collection, search, cart, blog, customer account, 404, password and gift card pages.
+
+Everything is editable in **Online Store → Themes → Customize**: text, colors (Theme settings → Colors), the free-shipping threshold and the cart upgrade offer (Theme settings → Cart), and every section can be reordered, hidden or duplicated.
+
+**Reviews:** the reviews section shows an honest "reviews coming" note until you add real reviews as blocks, or install a reviews app (Judge.me, Loox) and swap the section out.
+
+To update the theme after editing files here, zip the `theme/` folder contents (`cd theme && zip -r ../shopify/holdfast-theme.zip .`) and upload it, or use the Shopify CLI: `shopify theme push --path theme`.

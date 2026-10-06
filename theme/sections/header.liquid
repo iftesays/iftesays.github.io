@@ -1,0 +1,78 @@
+{%- assign menu = linklists[section.settings.menu] -%}
+<header class="header" data-header>
+  <div class="wrap header__inner">
+    <button class="header__icon header__menu-btn" type="button" aria-label="Open menu" aria-controls="MobileNav" aria-expanded="false" data-nav-open>
+      {% render 'icon', name: 'menu' %}
+    </button>
+
+    <a href="{{ routes.root_url }}" class="logo" aria-label="{{ shop.name }} home">
+      {%- if section.settings.logo != blank -%}
+        {%- assign logo_style = 'max-width: ' | append: section.settings.logo_width | append: 'px' -%}
+        {{ section.settings.logo | image_url: width: 400 | image_tag: class: 'logo__img', style: logo_style, alt: shop.name, widths: '200, 400' }}
+      {%- else -%}
+        <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M9 7v18M23 7v18M9 16h14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/></svg>
+        <span class="logo__word">{{ section.settings.wordmark | default: shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="header__nav" aria-label="Main">
+      <ul>
+        {%- for link in menu.links -%}
+          <li><a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a href="{{ routes.search_url }}" class="header__icon hide-sm" aria-label="Search">{% render 'icon', name: 'search' %}</a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="header__icon hide-sm" aria-label="Account">{% render 'icon', name: 'account' %}</a>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" class="header__icon header__cart" aria-label="Cart" data-cart-open>
+        {% render 'icon', name: 'cart' %}
+        <span class="cart-count{% if cart.item_count == 0 %} is-empty{% endif %}" data-cart-count>{{ cart.item_count }}</span>
+      </a>
+      {%- if section.settings.cta_link != blank -%}
+        <a href="{{ section.settings.cta_link }}" class="btn btn--accent btn--small hide-sm">{{ section.settings.cta_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</header>
+
+<div class="drawer drawer--left" id="MobileNav" data-drawer="nav" aria-hidden="true">
+  <div class="drawer__scrim" data-drawer-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer__head">
+      <span class="label-mono">Menu</span>
+      <button type="button" class="header__icon" data-drawer-close aria-label="Close menu">{% render 'icon', name: 'close' %}</button>
+    </div>
+    <ul class="mobile-nav">
+      {%- for link in menu.links -%}
+        <li><a href="{{ link.url }}">{{ link.title }}<span>{% render 'icon', name: 'arrow' %}</span></a></li>
+      {%- endfor -%}
+      <li><a href="{{ routes.search_url }}">Search<span>{% render 'icon', name: 'arrow' %}</span></a></li>
+      {%- if shop.customer_accounts_enabled -%}
+        <li><a href="{{ routes.account_url }}">Account<span>{% render 'icon', name: 'arrow' %}</span></a></li>
+      {%- endif -%}
+    </ul>
+    {%- if section.settings.cta_link != blank -%}
+      <a href="{{ section.settings.cta_link }}" class="btn btn--accent btn--block">{{ section.settings.cta_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo image" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 240, "step": 10, "unit": "px", "default": 140 },
+    { "type": "text", "id": "wordmark", "label": "Text logo (used when no image)", "default": "HOLDFAST" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop knee pads" },
+    { "type": "url", "id": "cta_link", "label": "Button link", "default": "/collections/all" }
+  ]
+}
+{% endschema %}

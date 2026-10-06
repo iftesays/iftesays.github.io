@@ -1,0 +1,22 @@
+<section class="section">
+  <div class="wrap wrap--form">
+    <div class="form-card">
+      <p class="label-mono label-mono--accent">Account</p>
+      <h1 class="h1">Create account</h1>
+      {%- form 'create_customer' -%}
+        {%- if form.errors -%}<div class="form-error">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <div class="field-row">
+          <label class="field"><span>First name</span><input type="text" name="customer[first_name]" autocomplete="given-name"></label>
+          <label class="field"><span>Last name</span><input type="text" name="customer[last_name]" autocomplete="family-name"></label>
+        </div>
+        <label class="field"><span>Email</span><input type="email" name="customer[email]" autocomplete="email" required></label>
+        <label class="field"><span>Password</span><input type="password" name="customer[password]" autocomplete="new-password" required></label>
+        <button type="submit" class="btn btn--accent btn--block">Create account</button>
+        <p class="form-links">Already have one? <a href="{{ routes.account_login_url }}">Log in</a></p>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{ "name": "Register", "settings": [] }
+{% endschema %}

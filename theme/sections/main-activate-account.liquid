@@ -1,0 +1,17 @@
+<section class="section">
+  <div class="wrap wrap--form">
+    <div class="form-card">
+      <h1 class="h1">Activate account</h1>
+      {%- form 'activate_customer_password' -%}
+        {%- if form.errors -%}<div class="form-error">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <label class="field"><span>Password</span><input type="password" name="customer[password]" autocomplete="new-password" required></label>
+        <label class="field"><span>Confirm password</span><input type="password" name="customer[password_confirmation]" autocomplete="new-password" required></label>
+        <button type="submit" class="btn btn--accent btn--block">Activate</button>
+        <button type="submit" name="decline" class="link-btn">Decline invitation</button>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{ "name": "Activate account", "settings": [] }
+{% endschema %}

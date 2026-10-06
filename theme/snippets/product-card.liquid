@@ -1,0 +1,19 @@
+{%- comment -%} Usage: {% render 'product-card', product: product %} {%- endcomment -%}
+<article class="card reveal">
+  <a href="{{ product.url }}" class="card__media">
+    {%- if product.featured_media -%}
+      {%- assign alt = product.featured_media.alt | default: product.title -%}
+      {{ product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 33vw, 90vw', alt: alt }}
+    {%- else -%}
+      {% render 'product-art', key: product.id %}
+    {%- endif -%}
+    {%- if product.compare_at_price_max > product.price_min -%}<span class="card__badge">Bundle &amp; save</span>{%- endif -%}
+  </a>
+  <div class="card__body">
+    <h3 class="card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    <p class="card__price">
+      {%- if product.price_varies -%}From {% endif -%}{{ product.price_min | money }}
+    </p>
+    <a href="{{ product.url }}" class="btn btn--ink btn--small">Shop now {% render 'icon', name: 'arrow' %}</a>
+  </div>
+</article>
