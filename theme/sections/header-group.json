@@ -17,7 +17,7 @@
       "type": "header",
       "settings": {
         "wordmark": "HOLDFAST",
-        "menu": "main-menu",
+        "menu": "holdfast-main",
         "cta_label": "Shop knee pads",
         "cta_link": "/products/holdfast-anti-slip-work-knee-pads"
       }
