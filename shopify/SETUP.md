@@ -66,15 +66,19 @@ Commit and push. GitHub Pages redeploys, and the buy buttons now go straight to 
 
 ## 7. The Holdfast theme
 
-`theme/` is a custom Shopify theme built for this brand. It includes:
+`theme/` is a custom Shopify theme built for this brand: a clean workwear-store layout (Barlow type, white and warm-gray sections, restrained motion).
 
-- **Homepage:** animated hero with rotating headline and spec callouts, trades ticker, pain-point quotes, an animated "stand-up test" (typical pad slides down while Holdfast stays put), featured product with pack selector, features, count-up stats, an interactive layer diagram, a comparison table, guarantee seal, reviews, FAQ and a closing CTA.
-- **Product page:** gallery (uses an illustrated pad until you add photos), pack cards with savings badges, quantity, Add to cart and Buy it now, a sticky add-to-cart bar, collapsible details, then the stand-up test, layers, comparison, reviews and FAQ.
-- **Slide-out cart:** free-shipping meter, quantity controls, and a one-click "upgrade to 2 Pairs" offer.
-- About, FAQ and Contact page templates, collection, search, cart, blog, customer account, 404, password and gift card pages.
+- **Homepage:** hero, trust bar, featured product with pack selector, a draggable before/after slider ("Why they don't slide down"), clickable feature hotspots ("How they're built"), a trades carousel, a comparison table, a 30-day returns banner, reviews (hidden until you add real ones) and FAQ.
+- **Product page:** image gallery with thumbnails, swipe and arrows; pack cards with per-pair price and dollar savings; Shop Pay installments line; quantity; Add to cart and Buy it now; collapsible Description, Fit & sizing, Shipping & returns; a sticky add-to-cart bar; then the slider, hotspots, comparison, reviews and FAQ.
+- **Slide-out cart** with a one-click "switch to 2 Pairs" offer.
+- About, FAQ and Contact templates, collection, search, cart, blog, customer accounts, 404, password and gift card pages.
 
-Everything is editable in **Online Store → Themes → Customize**: text, colors (Theme settings → Colors), the free-shipping threshold and the cart upgrade offer (Theme settings → Cart), and every section can be reordered, hidden or duplicated.
+**Photos:** until you add photos, every image slot shows a technical line drawing of the pad. Add product photos in Shopify (Products → the knee pads → Media) and the gallery, cards and cart switch to them automatically. Hero, before/after slider, hotspots, image-with-text and trade cards each have an image setting in the theme editor.
 
-**Reviews:** the reviews section shows an honest "reviews coming" note until you add real reviews as blocks, or install a reviews app (Judge.me, Loox) and swap the section out.
+**Reviews:** the reviews section renders nothing until you add a review block. Only add real customer reviews, or install a reviews app (Judge.me, Shopify Product Reviews).
 
-To update the theme after editing files here, zip the `theme/` folder contents (`cd theme && zip -r ../shopify/holdfast-theme.zip .`) and upload it, or use the Shopify CLI: `shopify theme push --path theme`.
+**Policies:** create Refund and Shipping policies in Settings → Policies (Shopify can generate them). Make the refund policy match the 30-day returns promise on the site. Right now the "How returns work" buttons point to the FAQ page because those policies don't exist yet.
+
+Everything is editable in **Online Store → Themes → Customize**: text, colors (Theme settings → Colors), the cart upgrade offer (Theme settings → Cart), and every section can be reordered, hidden or duplicated.
+
+To update the theme after editing files here, zip the contents of `theme/` (`cd theme && zip -r ../shopify/holdfast-theme.zip .`) and upload it, or use the Shopify CLI: `shopify theme push --path theme`.
