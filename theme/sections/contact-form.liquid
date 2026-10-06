@@ -1,21 +1,44 @@
-<section class="section section--tight">
-  <div class="wrap wrap--narrow">
-    {%- form 'contact', id: 'ContactForm', class: 'form-card' -%}
-      {%- if form.posted_successfully? -%}
-        <p class="form-success">{% render 'icon', name: 'check' %} Thanks. We'll get back to you within one business day.</p>
-      {%- endif -%}
-      {%- if form.errors -%}<div class="form-error">{{ form.errors | default_errors }}</div>{%- endif -%}
-      <div class="field-row">
-        <label class="field"><span>Name</span><input type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}"></label>
-        <label class="field"><span>Email *</span><input type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"></label>
-      </div>
-      <label class="field"><span>Order number (if you have one)</span><input type="text" name="contact[order]" value="{{ form.order }}"></label>
-      <label class="field"><span>Message *</span><textarea name="contact[body]" rows="6" required>{{ form.body }}</textarea></label>
-      <button type="submit" class="btn btn--accent">Send message {% render 'icon', name: 'arrow' %}</button>
-    {%- endform -%}
+<section class="section" style="padding-top: 0">
+  <div class="page-width page-width--medium contact">
+    <div>
+      {%- if section.settings.text != blank -%}<div class="rte text-muted" style="margin-bottom: 28px">{{ section.settings.text }}</div>{%- endif -%}
+      <ul class="contact__details">
+        {%- if section.settings.email != blank -%}
+          <li>{% render 'icon', name: 'mail' %}<div><strong>Email</strong><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></div></li>
+        {%- endif -%}
+        {%- if section.settings.hours != blank -%}
+          <li>{% render 'icon', name: 'clock' %}<div><strong>Hours</strong>{{ section.settings.hours }}</div></li>
+        {%- endif -%}
+        <li>{% render 'icon', name: 'box' %}<div><strong>Orders and returns</strong>Include your order number so we can find it quickly.</div></li>
+      </ul>
+    </div>
+    <div>
+      {%- form 'contact', id: 'ContactForm' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form-message form-message--success" role="status" style="margin-bottom: 20px">Thanks for your message. We'll get back to you soon.</p>
+        {%- endif -%}
+        {%- if form.errors -%}<div class="form-message form-message--error" role="alert" style="margin-bottom: 20px">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <div class="field-row">
+          <div class="field"><label for="ContactName">Name</label><input id="ContactName" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}"></div>
+          <div class="field"><label for="ContactEmail">Email</label><input id="ContactEmail" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"></div>
+        </div>
+        <div class="field"><label for="ContactOrder">Order number (optional)</label><input id="ContactOrder" type="text" name="contact[order]" value="{{ form.order }}"></div>
+        <div class="field"><label for="ContactBody">Message</label><textarea id="ContactBody" name="contact[body]" required>{{ form.body }}</textarea></div>
+        <button type="submit" class="btn">Send message</button>
+      {%- endform -%}
+    </div>
   </div>
 </section>
 
 {% schema %}
-{ "name": "Contact form", "class": "section-contact", "settings": [], "presets": [{ "name": "Contact form" }] }
+{
+  "name": "Contact form",
+  "class": "section-contact",
+  "settings": [
+    { "type": "richtext", "id": "text", "label": "Intro", "default": "<p>Questions about sizing, an order or a return? Send us a message and include your order number if you have one.</p>" },
+    { "type": "text", "id": "email", "label": "Support email", "info": "Leave blank to hide." },
+    { "type": "text", "id": "hours", "label": "Support hours", "info": "Leave blank to hide. For example: Monday to Friday, 9am–5pm ET" }
+  ],
+  "presets": [{ "name": "Contact form" }]
+}
 {% endschema %}

@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Holdfast",
-    "theme_version": "1.0.0",
+    "theme_version": "2.0.0",
     "theme_author": "Holdfast",
     "theme_documentation_url": "https://github.com/iftesays/iftesays.github.io",
     "theme_support_url": "https://github.com/iftesays/iftesays.github.io"
@@ -10,17 +10,66 @@
   {
     "name": "Colors",
     "settings": [
-      { "type": "color", "id": "color_ink", "label": "Ink (dark)", "default": "#111315" },
-      { "type": "color", "id": "color_paper", "label": "Paper (light background)", "default": "#f1eee6" },
-      { "type": "color", "id": "color_accent", "label": "Accent (safety orange)", "default": "#ff5f1f" },
-      { "type": "color", "id": "color_signal", "label": "Signal (hi-vis highlight)", "default": "#d7ff3a" }
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#1c1d1f"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_alt",
+        "label": "Alternate background",
+        "info": "Used for alternating sections and image placeholders.",
+        "default": "#f4f2ee"
+      },
+      {
+        "type": "color",
+        "id": "color_dark",
+        "label": "Dark sections and footer",
+        "default": "#1c1d1f"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Buttons and accents",
+        "default": "#c8470c"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Savings",
+        "default": "#2e7d4f"
+      }
     ]
   },
   {
     "name": "Brand",
     "settings": [
-      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "32 × 32px .png recommended" },
-      { "type": "text", "id": "brand_tagline", "label": "Tagline", "default": "Built for the kneeling trades." }
+      {
+        "type": "product",
+        "id": "primary_product",
+        "label": "Main product",
+        "info": "Used for \"Shop knee pads\" links on empty cart and 404 pages."
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32 \u00d7 32px .png recommended"
+      },
+      {
+        "type": "text",
+        "id": "brand_tagline",
+        "label": "Tagline",
+        "default": "Work knee pads that stay up."
+      }
     ]
   },
   {
@@ -37,20 +86,59 @@
         "unit": "$",
         "default": 0
       },
-      { "type": "header", "content": "Cart upgrade offer" },
-      { "type": "checkbox", "id": "upsell_enabled", "label": "Offer pack upgrade in cart", "default": true },
-      { "type": "text", "id": "upsell_from", "label": "Upgrade from variant title", "default": "1 Pair" },
-      { "type": "text", "id": "upsell_to", "label": "Upgrade to variant title", "default": "2 Pairs" },
-      { "type": "text", "id": "upsell_text", "label": "Upgrade message", "default": "One for the van, one for the bag." }
+      {
+        "type": "header",
+        "content": "Cart upgrade offer"
+      },
+      {
+        "type": "checkbox",
+        "id": "upsell_enabled",
+        "label": "Offer pack upgrade in cart",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "upsell_from",
+        "label": "Upgrade from variant title",
+        "default": "1 Pair"
+      },
+      {
+        "type": "text",
+        "id": "upsell_to",
+        "label": "Upgrade to variant title",
+        "default": "2 Pairs"
+      },
+      {
+        "type": "text",
+        "id": "upsell_text",
+        "label": "Upgrade message",
+        "default": "One for the van, one for the bag."
+      }
     ]
   },
   {
     "name": "Social media",
     "settings": [
-      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
-      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" },
-      { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
-      { "type": "text", "id": "social_youtube", "label": "YouTube URL" }
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube URL"
+      }
     ]
   }
 ]

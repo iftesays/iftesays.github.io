@@ -1,45 +1,56 @@
 {%- comment -%}
-  Add real customer reviews as blocks (or replace this section with a
-  reviews app such as Judge.me). With no blocks it shows an honest
-  "reviews coming" note instead of placeholder testimonials.
+  Renders nothing until at least one review block is added, so an empty
+  store never shows an empty reviews area. Swap this section for a reviews
+  app block (Judge.me, Shopify Product Reviews) once one is installed.
 {%- endcomment -%}
-<section class="section" id="{{ section.settings.anchor | default: section.id }}">
-  <div class="wrap">
-    <div class="section-head section-head--center reveal">
-      <p class="label-mono label-mono--accent">{{ section.settings.kicker }}</p>
-      <h2 class="h1">{{ section.settings.heading }}</h2>
-    </div>
-    {%- if section.blocks.size > 0 -%}
-      <div class="reviews">
+{%- if section.blocks.size > 0 -%}
+  {%- liquid
+    assign total = 0
+    for block in section.blocks
+      assign total = total | plus: block.settings.rating
+    endfor
+    assign average = total | times: 1.0 | divided_by: section.blocks.size | round: 1
+    assign filled = average | round
+  -%}
+  <section class="section{% if section.settings.alt_background %} section--alt{% endif %}" id="reviews">
+    <div class="page-width page-width--medium">
+      <div class="reviews-summary reveal">
+        <h2 style="margin: 0">{{ section.settings.heading }}</h2>
+        <div>
+          <span class="stars" aria-hidden="true">{%- for i in (1..5) -%}{%- if i <= filled -%}{% render 'icon', name: 'star' %}{%- else -%}<span class="stars--empty">{% render 'icon', name: 'star' %}</span>{%- endif -%}{%- endfor -%}</span>
+          <span>{{ average }} out of 5 · {{ section.blocks.size }} {{ section.blocks.size | pluralize: 'review', 'reviews' }}</span>
+        </div>
+      </div>
+      <div class="review-list">
         {%- for block in section.blocks -%}
-          <figure class="review reveal" style="--d: {{ forloop.index0 | times: 90 }}ms" {{ block.shopify_attributes }}>
-            <div class="review__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
-              {%- for i in (1..5) -%}<span class="{% if i <= block.settings.rating %}is-on{% endif %}">★</span>{%- endfor -%}
+          <article class="review reveal" {{ block.shopify_attributes }}>
+            <div class="review__author">
+              <strong>{{ block.settings.name }}</strong>
+              {%- if block.settings.trade != blank -%}<span>{{ block.settings.trade }}</span><br>{%- endif -%}
+              {%- if block.settings.verified -%}<span class="review__verified">{% render 'icon', name: 'check' %}Verified buyer</span>{%- endif -%}
             </div>
-            <blockquote>{{ block.settings.text }}</blockquote>
-            <figcaption><strong>{{ block.settings.name }}</strong>{% if block.settings.trade != blank %} · {{ block.settings.trade }}{% endif %}{% if block.settings.verified %} <span class="verified">{% render 'icon', name: 'check' %} Verified buyer</span>{% endif %}</figcaption>
-          </figure>
+            <div>
+              <span class="stars" role="img" aria-label="{{ block.settings.rating }} out of 5 stars">
+                {%- for i in (1..5) -%}{%- if i <= block.settings.rating -%}{% render 'icon', name: 'star' %}{%- else -%}<span class="stars--empty">{% render 'icon', name: 'star' %}</span>{%- endif -%}{%- endfor -%}
+              </span>
+              {%- if block.settings.title != blank -%}<h3>{{ block.settings.title }}</h3>{%- endif -%}
+              <p>{{ block.settings.text }}</p>
+            </div>
+          </article>
         {%- endfor -%}
       </div>
-    {%- else -%}
-      <div class="reviews-empty reveal">
-        <p class="h3">{{ section.settings.empty_heading }}</p>
-        <p>{{ section.settings.empty_text }}</p>
-      </div>
-    {%- endif -%}
-  </div>
-</section>
+    </div>
+  </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Reviews",
   "class": "section-reviews",
   "settings": [
-    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "reviews" },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Reviews" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "From the job site" },
-    { "type": "text", "id": "empty_heading", "label": "Heading when there are no reviews", "default": "We're new, and we don't post reviews we didn't earn." },
-    { "type": "text", "id": "empty_text", "label": "Text when there are no reviews", "default": "Verified buyer reviews will show up here as the first orders get worn in." }
+    { "type": "paragraph", "content": "This section stays hidden until you add a review. Only add real reviews from customers." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Customer reviews" },
+    { "type": "checkbox", "id": "alt_background", "label": "Alternate background", "default": false }
   ],
   "blocks": [
     {
@@ -47,9 +58,10 @@
       "name": "Review",
       "settings": [
         { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Title" },
         { "type": "textarea", "id": "text", "label": "Review" },
-        { "type": "text", "id": "name", "label": "Name" },
-        { "type": "text", "id": "trade", "label": "Trade" },
+        { "type": "text", "id": "name", "label": "Customer name" },
+        { "type": "text", "id": "trade", "label": "Trade or location" },
         { "type": "checkbox", "id": "verified", "label": "Verified buyer", "default": true }
       ]
     }

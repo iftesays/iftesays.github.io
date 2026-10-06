@@ -1,1 +1,22 @@
-{ "sections": { "main": { "type": "main-page", "settings": {} }, "form": { "type": "contact-form", "settings": {} } }, "order": ["main", "form"] }
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "compact": true
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "settings": {
+        "text": "<p>Questions about sizing, an order or a return? Send us a message and include your order number if you have one.</p>",
+        "email": "",
+        "hours": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "form"
+  ]
+}

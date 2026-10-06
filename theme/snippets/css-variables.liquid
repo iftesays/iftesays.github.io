@@ -1,0 +1,11 @@
+<style>
+  :root {
+    --color-text: {{ settings.color_text }};
+    --color-bg: {{ settings.color_bg }};
+    --color-bg-alt: {{ settings.color_bg_alt }};
+    --color-dark: {{ settings.color_dark }};
+    --color-accent: {{ settings.color_accent }};
+    --color-accent-hover: {{ settings.color_accent | color_darken: 8 }};
+    --color-sale: {{ settings.color_sale }};
+  }
+</style>

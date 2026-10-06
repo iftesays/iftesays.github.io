@@ -1,48 +1,55 @@
-<section class="section" id="{{ section.settings.anchor | default: section.id }}">
-  <div class="wrap">
-    <div class="section-head section-head--center reveal">
-      <p class="label-mono label-mono--accent">{{ section.settings.kicker }}</p>
-      <h2 class="h1">{{ section.settings.heading }}</h2>
+<section class="section{% if section.settings.alt_background %} section--alt{% endif %}" {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %}>
+  <div class="page-width">
+    <div class="section-heading section-heading--center reveal">
+      {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
     </div>
-    <div class="compare reveal" role="table" aria-label="{{ section.settings.heading | escape }}">
-      <div class="compare__row compare__row--head" role="row">
-        <span role="columnheader"></span>
-        <span role="columnheader" class="compare__us">{{ section.settings.us_label }}</span>
-        <span role="columnheader">{{ section.settings.them_label }}</span>
-      </div>
-      {%- for block in section.blocks -%}
-        <div class="compare__row" role="row" {{ block.shopify_attributes }}>
-          <span role="rowheader" class="compare__feat">{{ block.settings.feature }}</span>
-          <span role="cell" class="compare__us">{% render 'icon', name: 'check' %}{{ block.settings.us }}</span>
-          <span role="cell" class="compare__them">{% render 'icon', name: 'x' %}{{ block.settings.them }}</span>
-        </div>
-      {%- endfor -%}
+    <div class="comparison-wrap reveal">
+      <table class="comparison">
+        <thead>
+          <tr>
+            <td></td>
+            <th scope="col" class="comparison__us">{{ section.settings.us_label }}</th>
+            <th scope="col" class="comparison__them">{{ section.settings.them_label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            <tr {{ block.shopify_attributes }}>
+              <th scope="row">{{ block.settings.feature }}</th>
+              <td class="comparison__us"><span>{% render 'icon', name: 'check' %}{{ block.settings.us }}</span></td>
+              <td class="comparison__them"><span>{% render 'icon', name: 'dash' %}{{ block.settings.them }}</span></td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Comparison",
-  "class": "section-compare",
+  "name": "Comparison table",
+  "class": "section-comparison",
   "settings": [
     { "type": "text", "id": "anchor", "label": "Anchor ID" },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Side by side" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Not another strap-and-hope pad" },
-    { "type": "text", "id": "us_label", "label": "Our column", "default": "Holdfast" },
-    { "type": "text", "id": "them_label", "label": "Their column", "default": "Typical strap pads" }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Holdfast vs. typical strap knee pads" },
+    { "type": "text", "id": "text", "label": "Text" },
+    { "type": "text", "id": "us_label", "label": "First column", "default": "Holdfast" },
+    { "type": "text", "id": "them_label", "label": "Second column", "default": "Typical single-strap pad" },
+    { "type": "checkbox", "id": "alt_background", "label": "Alternate background", "default": false }
   ],
   "blocks": [
     {
       "type": "row",
       "name": "Row",
       "settings": [
-        { "type": "text", "id": "feature", "label": "Feature", "default": "Stays up when you stand" },
-        { "type": "text", "id": "us", "label": "Holdfast", "default": "Anti-slip lining holds it" },
-        { "type": "text", "id": "them", "label": "Typical", "default": "Slides toward the ankle" }
+        { "type": "text", "id": "feature", "label": "Feature", "default": "Staying up" },
+        { "type": "text", "id": "us", "label": "First column", "default": "Silicone grip lining" },
+        { "type": "text", "id": "them", "label": "Second column", "default": "Strap tension only" }
       ]
     }
   ],
-  "presets": [{ "name": "Comparison", "blocks": [{ "type": "row" }] }]
+  "presets": [{ "name": "Comparison table", "blocks": [{ "type": "row" }] }]
 }
 {% endschema %}

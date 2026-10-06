@@ -1,0 +1,68 @@
+<section class="section{% if section.settings.alt_background %} section--alt{% endif %}" {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %}>
+  <div class="page-width">
+    <div class="hotspots" data-hotspots>
+      <div class="hotspots__media reveal">
+        {%- if section.settings.image != blank -%}
+          {%- assign alt = section.settings.image.alt | default: '' -%}
+          <div class="media media--product">{{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 58vw, 100vw', alt: alt }}</div>
+        {%- else -%}
+          <div class="media media--drawing">{% render 'drawing', name: 'front', uid: section.id %}</div>
+        {%- endif -%}
+        {%- for block in section.blocks -%}
+          <button type="button" class="hotspot" data-hotspot="{{ forloop.index }}" style="left: {{ block.settings.x }}%; top: {{ block.settings.y }}%" aria-label="{{ block.settings.title | escape }}" aria-expanded="false" aria-controls="Hotspot-{{ section.id }}-{{ forloop.index }}">
+            {% render 'icon', name: 'plus' %}
+          </button>
+        {%- endfor -%}
+      </div>
+
+      <div class="reveal" style="--delay: 80ms">
+        <div class="section-heading" style="margin-bottom: 24px">
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+          {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+        </div>
+        <ol class="hotspots__list">
+          {%- for block in section.blocks -%}
+            <li class="hotspots__item" data-hotspot-item="{{ forloop.index }}" {{ block.shopify_attributes }}>
+              <button type="button" class="hotspots__trigger" aria-expanded="false" aria-controls="Hotspot-{{ section.id }}-{{ forloop.index }}">
+                <span class="hotspots__num" aria-hidden="true">{{ forloop.index }}</span>
+                <span class="hotspots__title">{{ block.settings.title }}</span>
+                {% render 'icon', name: 'plus' %}
+              </button>
+              <div class="hotspots__panel" id="Hotspot-{{ section.id }}-{{ forloop.index }}" role="region">
+                <div><p>{{ block.settings.text }}</p></div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Feature hotspots",
+  "class": "section-hotspots",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Square product photo on a plain background. Without one, a product drawing is shown and the default hotspot positions line up with it." },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "how" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How they're built" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Select a point on the pad to see what it does." },
+    { "type": "checkbox", "id": "alt_background", "label": "Alternate background", "default": false }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Hotspot",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Hard shell cap" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Stands up to concrete, gravel and loose screws so the cushion underneath lasts longer." },
+        { "type": "range", "id": "x", "label": "Horizontal position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
+        { "type": "range", "id": "y", "label": "Vertical position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 46 }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Feature hotspots", "blocks": [{ "type": "hotspot" }] }]
+}
+{% endschema %}

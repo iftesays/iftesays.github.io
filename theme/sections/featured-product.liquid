@@ -1,45 +1,64 @@
 {%- assign product = section.settings.product -%}
-<section class="section featured" id="{{ section.settings.anchor | default: section.id }}">
-  <div class="wrap featured__grid">
-    <div class="featured__media reveal">
-      <div class="featured__frame">
-        <span class="sticker">{{ section.settings.sticker }}</span>
-        {%- if product.featured_media -%}
-          {{ product.featured_media | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600, 900, 1200', sizes: '(min-width: 990px) 50vw, 90vw' }}
-        {%- else -%}
-          {% render 'product-art', key: 'featured', pair: true %}
-        {%- endif -%}
+<section class="section{% if section.settings.alt_background %} section--alt{% endif %}" id="{{ section.settings.anchor | default: section.id }}" data-product>
+  <div class="page-width">
+    {%- if product != blank -%}
+      {%- assign current = product.selected_or_first_available_variant -%}
+      {%- liquid
+        assign save_percent = 0
+        if current.compare_at_price > current.price
+          assign save_percent = current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price | floor
+        endif
+      -%}
+      <div class="product">
+        <div class="product__media">
+          {% render 'product-gallery', product: product, uid: section.id %}
+        </div>
+        <div class="product__info">
+          {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+          <h2 class="product__title"><a href="{{ product.url }}" style="text-decoration: none">{{ product.title }}</a></h2>
+          <div class="product__price">
+            <span data-price>{{ current.price | money }}</span>
+            <s data-compare-price {% unless save_percent > 0 %}hidden{% endunless %}>{% if save_percent > 0 %}{{ current.compare_at_price | money }}{% endif %}</s>
+            <span class="badge" data-save-badge {% unless save_percent > 0 %}hidden{% endunless %}>{% if save_percent > 0 %}Save {{ save_percent }}%{% endif %}</span>
+          </div>
+          {%- if section.settings.text != blank -%}<div class="product__subtitle rte">{{ section.settings.text }}</div>{%- endif -%}
+          {%- if section.settings.highlights != blank -%}
+            <ul class="product__highlights">
+              {%- assign lines = section.settings.highlights | newline_to_br | split: '<br />' -%}
+              {%- for line in lines -%}
+                {%- assign l = line | strip -%}
+                {%- if l != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ l }}</span></li>{%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          {% render 'buy-box', product: product, section: section, main: false, show_payment_button: section.settings.show_payment_button, show_quantity: false, show_perks: false %}
+          <p style="margin: 20px 0 0"><a href="{{ product.url }}" class="link">View full details{% render 'icon', name: 'arrow' %}</a></p>
+        </div>
       </div>
-    </div>
-    <div class="featured__info reveal">
-      <p class="label-mono label-mono--accent">{{ section.settings.kicker }}</p>
-      {%- if product != blank -%}
-        <h2 class="h1"><a href="{{ product.url }}">{{ product.title }}</a></h2>
-        <ul class="ticks">
-          {%- assign ticks = section.settings.ticks | newline_to_br | split: '<br />' -%}
-          {%- for t in ticks -%}{%- assign tt = t | strip -%}{%- if tt != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ tt }}</span></li>{%- endif -%}{%- endfor -%}
-        </ul>
-        {% render 'buy-box', product: product, section: section, show_payment_button: section.settings.show_payment_button %}
-        <a href="{{ product.url }}" class="link-arrow">Full details {% render 'icon', name: 'arrow' %}</a>
-      {%- else -%}
-        <h2 class="h1">Pick a product</h2>
-        <p>Choose a product for this section in the theme editor.</p>
-      {%- endif -%}
-    </div>
+    {%- else -%}
+      <div class="product">
+        <div class="media media--drawing media--square">{% render 'drawing', name: 'front', uid: section.id %}</div>
+        <div class="product__info">
+          <h2 class="product__title">Featured product</h2>
+          <p class="text-muted">Choose a product for this section in the theme editor.</p>
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Featured product",
-  "class": "section-featured",
+  "class": "section-featured-product",
   "settings": [
     { "type": "product", "id": "product", "label": "Product" },
-    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "shop" },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The only pair you'll need" },
-    { "type": "text", "id": "sticker", "label": "Sticker text", "default": "Stays up" },
-    { "type": "textarea", "id": "ticks", "label": "Benefit lines (one per line)", "default": "Anti-slip silicone lining grips your pants\nSplit straps: no tourniquet behind the knee\nGel cushion over high-density foam\nHard cap slides on tile, pivots on subfloor" },
-    { "type": "checkbox", "id": "show_payment_button", "label": "Show dynamic checkout button", "default": true }
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "info": "Lets menu links jump here, e.g. /#shop", "default": "shop" },
+    { "type": "text", "id": "eyebrow", "label": "Small heading" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Hard cap knee pads with a gel cushion and silicone-lined straps that grip your pants instead of squeezing your leg.</p>" },
+    { "type": "textarea", "id": "highlights", "label": "Highlights", "info": "One per line.", "default": "Silicone grip lining holds onto your pant legs\nTwo adjustable straps, one above and one below the knee\nGel cushion over high-density foam\nHard shell cap for concrete, tile and subfloor" },
+    { "type": "checkbox", "id": "show_payment_button", "label": "Show dynamic checkout button", "default": false },
+    { "type": "checkbox", "id": "alt_background", "label": "Alternate background", "default": false }
   ],
   "presets": [{ "name": "Featured product" }]
 }

@@ -1,16 +1,16 @@
 <section class="section">
-  <div class="wrap wrap--mid">
-    <a href="{{ routes.account_url }}" class="label-mono label-mono--accent">← Account</a>
-    <h1 class="h1">Addresses</h1>
+  <div class="page-width page-width--medium">
+    <a href="{{ routes.account_url }}" class="text-muted">← Account</a>
+    <h1 class="h2">Addresses</h1>
     {%- paginate customer.addresses by 10 -%}
-      <div class="grid grid--cards">
+      <div class="grid">
         {%- for address in customer.addresses -%}
           <div class="form-card">
-            {%- if address == customer.default_address -%}<span class="label-mono label-mono--accent">Default</span>{%- endif -%}
+            {%- if address == customer.default_address -%}<span class="text-muted">Default</span>{%- endif -%}
             {{ address | format_address }}
             {%- form 'customer_address', address -%}
               <input type="hidden" name="_method" value="delete">
-              <button type="submit" class="link-btn" onclick="return confirm('Delete this address?')">Delete</button>
+              <button type="submit" class="link-plain" onclick="return confirm('Delete this address?')">Delete</button>
             {%- endform -%}
           </div>
         {%- endfor -%}
@@ -19,7 +19,7 @@
     <div class="form-card">
       <h2 class="h3">Add a new address</h2>
       {%- form 'customer_address', customer.new_address -%}
-        {%- if form.errors -%}<div class="form-error">{{ form.errors | default_errors }}</div>{%- endif -%}
+        {%- if form.errors -%}<div class="form-message form-message--error">{{ form.errors | default_errors }}</div>{%- endif -%}
         <div class="field-row">
           <label class="field"><span>First name</span><input type="text" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name"></label>
           <label class="field"><span>Last name</span><input type="text" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name"></label>
@@ -36,8 +36,8 @@
           <label class="field"><span>State / province</span><input type="text" name="address[province]" value="{{ form.province }}"></label>
         </div>
         <label class="field"><span>Phone</span><input type="tel" name="address[phone]" value="{{ form.phone }}" autocomplete="tel"></label>
-        <label class="check">{{ form.set_as_default_checkbox }} Set as default address</label>
-        <button type="submit" class="btn btn--accent">Add address</button>
+        <label class="checkbox">{{ form.set_as_default_checkbox }} Set as default address</label>
+        <button type="submit" class="btn">Add address</button>
       {%- endform -%}
     </div>
   </div>

@@ -1,63 +1,70 @@
+{%- assign menu_count = 0 -%}
+{%- for block in section.blocks -%}{%- if block.type == 'menu' -%}{%- assign menu_count = menu_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
 <footer class="footer">
-  <div class="hazard" aria-hidden="true"></div>
-  <div class="wrap footer__grid">
-    <div class="footer__brand">
-      <a href="{{ routes.root_url }}" class="logo logo--light">
-        <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--paper)"/><path d="M9 7v18M23 7v18M9 16h14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/></svg>
-        <span class="logo__word">{{ section.settings.wordmark | default: shop.name }}</span>
+  <div class="page-width footer__top" style="--menu-cols: {{ menu_count | at_least: 1 }}">
+    <div class="footer__about">
+      <a href="{{ routes.root_url }}" class="logo">
+        <svg class="logo__mark" viewBox="0 0 28 28" aria-hidden="true" focusable="false"><rect width="28" height="28" rx="3" fill="currentColor"/><path d="M8 6.5v15M20 6.5v15M8 14h12" stroke="var(--color-dark)" stroke-width="3.2" stroke-linecap="square"/></svg>
+        <span>{{ section.settings.wordmark | default: shop.name }}</span>
       </a>
-      <p>{{ settings.brand_tagline }}</p>
-      <ul class="socials">
-        {%- if settings.social_instagram != blank -%}<li><a href="{{ settings.social_instagram }}" aria-label="Instagram">{% render 'icon', name: 'instagram' %}</a></li>{%- endif -%}
-        {%- if settings.social_tiktok != blank -%}<li><a href="{{ settings.social_tiktok }}" aria-label="TikTok">{% render 'icon', name: 'tiktok' %}</a></li>{%- endif -%}
-        {%- if settings.social_facebook != blank -%}<li><a href="{{ settings.social_facebook }}" aria-label="Facebook">{% render 'icon', name: 'facebook' %}</a></li>{%- endif -%}
-        {%- if settings.social_youtube != blank -%}<li><a href="{{ settings.social_youtube }}" aria-label="YouTube">{% render 'icon', name: 'youtube' %}</a></li>{%- endif -%}
-      </ul>
+      {%- if settings.brand_tagline != blank -%}<p>{{ settings.brand_tagline }}</p>{%- endif -%}
+      {%- if settings.social_instagram != blank or settings.social_tiktok != blank or settings.social_facebook != blank or settings.social_youtube != blank -%}
+        <ul class="footer__social">
+          {%- if settings.social_instagram != blank -%}<li><a href="{{ settings.social_instagram }}" aria-label="Instagram">{% render 'icon', name: 'instagram' %}</a></li>{%- endif -%}
+          {%- if settings.social_tiktok != blank -%}<li><a href="{{ settings.social_tiktok }}" aria-label="TikTok">{% render 'icon', name: 'tiktok' %}</a></li>{%- endif -%}
+          {%- if settings.social_facebook != blank -%}<li><a href="{{ settings.social_facebook }}" aria-label="Facebook">{% render 'icon', name: 'facebook' %}</a></li>{%- endif -%}
+          {%- if settings.social_youtube != blank -%}<li><a href="{{ settings.social_youtube }}" aria-label="YouTube">{% render 'icon', name: 'youtube' %}</a></li>{%- endif -%}
+        </ul>
+      {%- endif -%}
     </div>
 
     {%- for block in section.blocks -%}
       {%- case block.type -%}
         {%- when 'menu' -%}
-          <div class="footer__col" {{ block.shopify_attributes }}>
-            <h3 class="label-mono">{{ block.settings.heading }}</h3>
-            <ul>
+          <div {{ block.shopify_attributes }}>
+            <h2 class="footer__heading">{{ block.settings.heading }}</h2>
+            <ul class="footer__menu">
               {%- for link in linklists[block.settings.menu].links -%}
                 <li><a href="{{ link.url }}">{{ link.title }}</a></li>
               {%- endfor -%}
             </ul>
           </div>
         {%- when 'newsletter' -%}
-          <div class="footer__col footer__col--wide" {{ block.shopify_attributes }}>
-            <h3 class="label-mono">{{ block.settings.heading }}</h3>
-            <p>{{ block.settings.text }}</p>
-            {%- form 'customer', id: 'FooterNewsletter', class: 'inline-form' -%}
+          <div class="footer__newsletter" {{ block.shopify_attributes }}>
+            <h2 class="footer__heading">{{ block.settings.heading }}</h2>
+            {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+            {%- form 'customer', id: 'FooterNewsletter' -%}
               <input type="hidden" name="contact[tags]" value="newsletter">
               {%- if form.posted_successfully? -%}
-                <p class="form-success">You're on the list.</p>
+                <p class="form-message form-message--success" role="status">Thanks for signing up.</p>
               {%- else -%}
-                <label class="visually-hidden" for="FooterEmail">Email</label>
-                <input id="FooterEmail" type="email" name="contact[email]" placeholder="you@email.com" required autocomplete="email">
-                <button type="submit" class="btn btn--accent btn--small">Join</button>
+                <div class="inline-form">
+                  <label class="visually-hidden" for="FooterEmail">Email address</label>
+                  <input class="input" id="FooterEmail" type="email" name="contact[email]" placeholder="Email address" autocomplete="email" required>
+                  <button type="submit" class="btn btn--light btn--small">Sign up</button>
+                </div>
+                {%- if form.errors -%}<p class="form-message form-message--error" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
               {%- endif -%}
-              {%- if form.errors -%}<p class="form-error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
             {%- endform -%}
           </div>
       {%- endcase -%}
     {%- endfor -%}
   </div>
 
-  <div class="wrap footer__bottom">
-    <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}</span>
-    <span class="footer__policies">
+  <div class="page-width footer__bottom">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+    <ul class="footer__policies">
       {%- for policy in shop.policies -%}
-        {%- if policy != blank -%}<a href="{{ policy.url }}">{{ policy.title }}</a>{%- endif -%}
+        {%- if policy != blank -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endif -%}
       {%- endfor -%}
-    </span>
-    <span class="footer__pay">
-      {%- for type in shop.enabled_payment_types -%}
-        {{ type | payment_type_svg_tag: class: 'pay-icon' }}
-      {%- endfor -%}
-    </span>
+    </ul>
+    {%- if shop.enabled_payment_types.size > 0 -%}
+      <ul class="footer__payment" aria-label="Payment methods">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
   </div>
 </footer>
 
@@ -67,12 +74,13 @@
   "class": "section-footer",
   "enabled_on": { "groups": ["footer"] },
   "settings": [
-    { "type": "text", "id": "wordmark", "label": "Text logo", "default": "HOLDFAST" }
+    { "type": "text", "id": "wordmark", "label": "Text logo", "default": "Holdfast" }
   ],
   "blocks": [
     {
       "type": "menu",
       "name": "Menu",
+      "limit": 3,
       "settings": [
         { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
         { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
@@ -80,11 +88,11 @@
     },
     {
       "type": "newsletter",
-      "name": "Newsletter",
+      "name": "Email sign-up",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Job-site intel" },
-        { "type": "text", "id": "text", "label": "Text", "default": "Restocks, new gear, and no spam. Unsubscribe anytime." }
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Email sign-up" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Get restock alerts and new product news." }
       ]
     }
   ]

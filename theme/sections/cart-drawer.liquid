@@ -1,110 +1,110 @@
 {%- comment -%}
-  Slide-out cart. Re-rendered through the Section Rendering API after every
-  cart change (see theme.js), so it always reflects the live cart.
+  Slide-out cart. theme.js re-renders [data-cart-drawer-inner] through the
+  Section Rendering API (?section_id=cart-drawer) after every cart change.
 {%- endcomment -%}
 {%- liquid
   assign threshold = settings.free_shipping_threshold | times: 100
   assign remaining = threshold | minus: cart.total_price
+  assign progress = 100
   if threshold > 0
     assign progress = cart.total_price | times: 100 | divided_by: threshold
     if progress > 100
       assign progress = 100
     endif
-  else
-    assign progress = 100
   endif
 -%}
 <div class="drawer drawer--right" id="CartDrawer" data-drawer="cart" aria-hidden="true">
-  <div class="drawer__scrim" data-drawer-close></div>
-  <div class="drawer__panel cart-drawer" role="dialog" aria-modal="true" aria-label="Your cart" data-cart-drawer data-item-count="{{ cart.item_count }}">
-    <div class="drawer__head">
-      <span class="cart-drawer__title">Your cart <span class="label-mono">({{ cart.item_count }})</span></span>
-      <button type="button" class="header__icon" data-drawer-close aria-label="Close cart">{% render 'icon', name: 'close' %}</button>
-    </div>
-
-    <div class="ship-meter">
-      {%- if threshold == 0 or remaining <= 0 -%}
-        <p>{% render 'icon', name: 'truck' %} <strong>Free shipping</strong> unlocked</p>
-      {%- else -%}
-        <p>{% render 'icon', name: 'truck' %} You're <strong>{{ remaining | money }}</strong> away from free shipping</p>
-      {%- endif -%}
-      <div class="ship-meter__bar"><span style="width: {{ progress }}%"></span></div>
-    </div>
-
-    {%- if cart.item_count == 0 -%}
-      <div class="cart-empty">
-        {% render 'product-art', key: 'empty-cart' %}
-        <p class="h3">Your cart is empty.</p>
-        <p>Your knees have noticed.</p>
-        <a href="{{ routes.all_products_collection_url }}" class="btn btn--accent">Shop knee pads</a>
+  <div class="drawer__overlay" data-drawer-close></div>
+  <div class="drawer__panel cart-drawer" role="dialog" aria-modal="true" aria-label="Your cart">
+    <div class="cart-drawer__inner" data-cart-drawer-inner data-item-count="{{ cart.item_count }}" style="display: contents">
+      <div class="drawer__header">
+        <h2 class="drawer__title">Your cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}</h2>
+        <button type="button" class="header__icon" data-drawer-close aria-label="Close cart">{% render 'icon', name: 'close' %}</button>
       </div>
-    {%- else -%}
-      <ul class="cart-items">
-        {%- for item in cart.items -%}
-          <li class="cart-item">
-            <a href="{{ item.url }}" class="cart-item__media">
-              {%- if item.image -%}
-                {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: item.title }}
-              {%- else -%}
-                {% render 'product-art', key: item.key %}
-              {%- endif -%}
-            </a>
-            <div class="cart-item__info">
-              <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
-              {%- unless item.product.has_only_default_variant -%}
-                <span class="label-mono">{{ item.variant.title }}</span>
-              {%- endunless -%}
-              <div class="cart-item__row">
-                <div class="qty qty--small">
-                  <button type="button" class="qty__btn" data-line-change="{{ forloop.index }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="Decrease">{% render 'icon', name: 'minus' %}</button>
-                  <span class="qty__value">{{ item.quantity }}</span>
-                  <button type="button" class="qty__btn" data-line-change="{{ forloop.index }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase">{% render 'icon', name: 'plus' %}</button>
+
+      {%- if cart.item_count == 0 -%}
+        <div class="drawer__body">
+          <div class="cart-empty">
+            <p>Your cart is empty.</p>
+            <a href="{{ settings.primary_product.url | default: routes.all_products_collection_url }}" class="btn">Shop knee pads</a>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="cart-drawer__shipping">
+          {%- if threshold == 0 -%}
+            <p>{% render 'icon', name: 'truck' %} Free US shipping on this order.</p>
+          {%- elsif remaining > 0 -%}
+            <p>{% render 'icon', name: 'truck' %} Spend {{ remaining | money }} more for free shipping.</p>
+            <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ progress }}"><span style="width: {{ progress }}%"></span></div>
+          {%- else -%}
+            <p>{% render 'icon', name: 'truck' %} Your order ships free.</p>
+            <div class="progress"><span style="width: 100%"></span></div>
+          {%- endif -%}
+        </div>
+
+        <div class="drawer__body">
+          <ul class="cart-items">
+            {%- for item in cart.items -%}
+              <li class="cart-item">
+                <a href="{{ item.url }}" class="cart-item__media" tabindex="-1" aria-hidden="true">
+                  {%- if item.image -%}
+                    <div class="media media--product">{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}</div>
+                  {%- else -%}
+                    <div class="media media--drawing">{% render 'drawing', name: 'front', uid: item.key %}</div>
+                  {%- endif -%}
+                </a>
+                <div>
+                  <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
+                  {%- unless item.product.has_only_default_variant -%}
+                    <span class="cart-item__variant">{{ item.variant.title }}</span>
+                  {%- endunless -%}
+                  <div class="cart-item__actions">
+                    <div class="quantity quantity--small">
+                      <button type="button" class="quantity__button" data-line-change="{{ forloop.index }}" data-quantity="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity of {{ item.product.title | escape }}">{% render 'icon', name: 'minus' %}</button>
+                      <span class="quantity__input" aria-label="Quantity">{{ item.quantity }}</span>
+                      <button type="button" class="quantity__button" data-line-change="{{ forloop.index }}" data-quantity="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity of {{ item.product.title | escape }}">{% render 'icon', name: 'plus' %}</button>
+                    </div>
+                    <button type="button" class="link-plain" data-line-change="{{ forloop.index }}" data-quantity="0">Remove</button>
+                  </div>
                 </div>
-                <span class="cart-item__price">
+                <div class="cart-item__price">
                   {%- if item.original_line_price > item.final_line_price -%}<s>{{ item.original_line_price | money }}</s>{%- endif -%}
                   {{ item.final_line_price | money }}
-                </span>
-              </div>
-              <button type="button" class="link-btn" data-line-change="{{ forloop.index }}" data-qty="0">Remove</button>
-            </div>
-          </li>
+                </div>
+              </li>
 
-          {%- if settings.upsell_enabled and item.variant.title == settings.upsell_from -%}
-            {%- for v in item.product.variants -%}
-              {%- if v.title == settings.upsell_to and v.available -%}
-                {%- assign extra = v.price | times: item.quantity | minus: item.final_line_price -%}
-                <li class="upsell">
-                  <div>
-                    <span class="label-mono">Upgrade</span>
-                    <p><strong>Switch to {{ v.title }}</strong> for {{ extra | money }} more. {{ settings.upsell_text }}</p>
-                  </div>
-                  <button type="button" class="btn btn--ink btn--small" data-upgrade-line="{{ forloop.parentloop.index }}" data-upgrade-to="{{ v.id }}" data-upgrade-qty="{{ item.quantity }}">Upgrade</button>
-                </li>
+              {%- if settings.upsell_enabled and item.variant.title == settings.upsell_from -%}
+                {%- for v in item.product.variants -%}
+                  {%- if v.title == settings.upsell_to and v.available -%}
+                    {%- assign extra = v.price | times: item.quantity | minus: item.final_line_price -%}
+                    <li class="cart-upsell">
+                      <p><strong>Add a second pair</strong>Get {{ v.title }} for {{ extra | money }} more.{% if settings.upsell_text != blank %} {{ settings.upsell_text }}{% endif %}</p>
+                      <button type="button" class="btn btn--secondary btn--small" data-upgrade-from="{{ item.variant_id }}" data-upgrade-to="{{ v.id }}" data-upgrade-quantity="{{ item.quantity }}" data-upgrade-title="{{ v.title | escape }}">Switch</button>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
               {%- endif -%}
             {%- endfor -%}
-          {%- endif -%}
-        {%- endfor -%}
-      </ul>
-
-      <div class="cart-drawer__foot">
-        {%- if cart.cart_level_discount_applications.size > 0 -%}
-          <ul class="cart-discounts">
-            {%- for discount in cart.cart_level_discount_applications -%}
-              <li>{{ discount.title }} (−{{ discount.total_allocated_amount | money }})</li>
-            {%- endfor -%}
           </ul>
-        {%- endif -%}
-        <div class="cart-total">
-          <span>Subtotal</span>
-          <strong>{{ cart.total_price | money_with_currency }}</strong>
         </div>
-        <p class="cart-note">Taxes calculated at checkout. 30-day stay-up guarantee.</p>
-        <form action="{{ routes.cart_url }}" method="post">
-          <button type="submit" name="checkout" class="btn btn--accent btn--block btn--big">Checkout {% render 'icon', name: 'arrow' %}</button>
-        </form>
-        <a href="{{ routes.cart_url }}" class="link-btn cart-drawer__view">View full cart</a>
-      </div>
-    {%- endif -%}
+
+        <div class="cart-drawer__footer">
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            <ul class="cart-discounts">
+              {%- for discount in cart.cart_level_discount_applications -%}
+                <li>{{ discount.title }} (−{{ discount.total_allocated_amount | money }})</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          <div class="cart-totals"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
+          <p class="cart-drawer__note">Taxes calculated at checkout.</p>
+          <form action="{{ routes.cart_url }}" method="post">
+            <button type="submit" name="checkout" class="btn btn--full">Check out</button>
+          </form>
+          <a href="{{ routes.cart_url }}" class="cart-drawer__view">View cart</a>
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 

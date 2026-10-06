@@ -1,0 +1,127 @@
+{%- comment -%}
+  Technical line drawings used in place of photography until real photos
+  are uploaded. Any section that renders one also offers an image setting,
+  and the product gallery switches to product media automatically.
+
+  Usage: {% render 'drawing', name: 'front', uid: 'hero' %}
+  Names: front, side, section, pair, strap, leg-holdfast, leg-slipped
+{%- endcomment -%}
+{%- assign uid = 'd-' | append: section.id | append: '-' | append: uid | append: '-' | append: name | handleize -%}
+{%- capture pad -%}
+  <path d="M232 138c0-34 336-34 336 0l24 392c0 104-384 104-384 0z" fill="var(--drw-foam)" stroke="var(--drw-ink)" stroke-width="3"/>
+  <path d="M268 222c0-30 264-30 264 0l12 286c0 72-288 72-288 0z" fill="var(--drw-cap)" stroke="var(--drw-ink)" stroke-width="3"/>
+  <path d="M298 278c68-14 136-14 204 0M294 336c71-12 141-12 212 0M292 394c72-11 144-11 216 0M294 452c71-10 141-10 212 0" fill="none" stroke="var(--drw-ink)" stroke-width="2" opacity=".45"/>
+  <rect x="352" y="520" width="96" height="26" rx="3" fill="var(--drw-ink)"/>
+  <text x="400" y="538" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="15" letter-spacing="2" fill="var(--drw-bg)">HOLDFAST</text>
+{%- endcapture -%}
+{%- capture straps -%}
+  <rect x="120" y="226" width="560" height="44" rx="22" fill="var(--drw-strap)" stroke="var(--drw-ink)" stroke-width="3"/>
+  <path d="M146 248h508" stroke="var(--drw-bg)" stroke-width="2" stroke-dasharray="7 7" opacity=".6"/>
+  <rect x="632" y="218" width="58" height="60" rx="8" fill="var(--drw-accent)" stroke="var(--drw-ink)" stroke-width="3"/>
+  <rect x="134" y="512" width="532" height="44" rx="22" fill="var(--drw-strap)" stroke="var(--drw-ink)" stroke-width="3"/>
+  <path d="M160 534h480" stroke="var(--drw-bg)" stroke-width="2" stroke-dasharray="7 7" opacity=".6"/>
+  <rect x="620" y="504" width="58" height="60" rx="8" fill="var(--drw-accent)" stroke="var(--drw-ink)" stroke-width="3"/>
+{%- endcapture -%}
+
+{%- case name -%}
+  {%- when 'front' -%}
+    <svg class="drawing" viewBox="0 0 800 800" role="img" aria-label="Holdfast work knee pad, front view">
+      <ellipse cx="400" cy="650" rx="230" ry="16" fill="var(--drw-ink)" opacity=".08"/>
+      {{ straps }}
+      {{ pad }}
+    </svg>
+
+  {%- when 'pair' -%}
+    <svg class="drawing" viewBox="0 0 800 800" role="img" aria-label="A pair of Holdfast work knee pads">
+      <defs><g id="{{ uid }}-pad">{{ straps }}{{ pad }}</g></defs>
+      <ellipse cx="400" cy="560" rx="330" ry="14" fill="var(--drw-ink)" opacity=".08"/>
+      <use href="#{{ uid }}-pad" transform="translate(-44 196) scale(.56)"/>
+      <use href="#{{ uid }}-pad" transform="translate(356 196) scale(.56)"/>
+    </svg>
+
+  {%- when 'side' -%}
+    <svg class="drawing" viewBox="0 0 800 800" role="img" aria-label="Side view of a Holdfast knee pad worn on the leg, with one strap above the knee and one below">
+      <path d="M262 30c4 110 30 230 70 330 8 22 6 40-6 62-26 46-44 104-40 170 4 52 24 92 40 128h74c-4-40-2-84 6-126 10-56 20-110 26-156 6-48 30-90 40-128 14-56 14-140 12-280z" fill="var(--drw-bg)" stroke="var(--drw-ink)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M326 720h74l2 22 96 14c18 3 20 30 0 30H300c-14 0-18-20-8-28z" fill="var(--drw-strap)" stroke="var(--drw-ink)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M430 292c58 4 96 56 96 116s-38 112-96 118c-22-36-30-76-30-118s8-82 30-116z" fill="var(--drw-cap)" stroke="var(--drw-ink)" stroke-width="3"/>
+      <path d="M452 322c34 14 52 48 52 86s-18 72-52 86" fill="none" stroke="var(--drw-ink)" stroke-width="2" opacity=".4"/>
+      <path d="M318 316c40 14 86 16 130 4" fill="none" stroke="var(--drw-ink)" stroke-width="24" stroke-linecap="round"/>
+      <path d="M318 316c40 14 86 16 130 4" fill="none" stroke="var(--drw-strap)" stroke-width="17" stroke-linecap="round"/>
+      <path d="M300 506c46-8 94-8 138 2" fill="none" stroke="var(--drw-ink)" stroke-width="24" stroke-linecap="round"/>
+      <path d="M300 506c46-8 94-8 138 2" fill="none" stroke="var(--drw-strap)" stroke-width="17" stroke-linecap="round"/>
+      <g font-family="Barlow, Arial, sans-serif" fill="var(--drw-ink)">
+        <g stroke="var(--drw-muted)" stroke-width="1.5" fill="none"><path d="M456 318h110"/><path d="M528 410h38"/><path d="M446 508h120"/></g>
+        <g fill="var(--drw-muted)"><circle cx="456" cy="318" r="4"/><circle cx="528" cy="410" r="4"/><circle cx="446" cy="508" r="4"/></g>
+        <text x="578" y="314" font-size="26" font-weight="600">Upper strap</text><text x="578" y="342" font-size="21" fill="var(--drw-muted)">above the joint</text>
+        <text x="578" y="406" font-size="26" font-weight="600">Hard cap</text><text x="578" y="434" font-size="21" fill="var(--drw-muted)">over the kneecap</text>
+        <text x="578" y="504" font-size="26" font-weight="600">Lower strap</text><text x="578" y="532" font-size="21" fill="var(--drw-muted)">below the joint</text>
+      </g>
+    </svg>
+
+  {%- when 'section' -%}
+    <svg class="drawing" viewBox="0 0 800 600" role="img" aria-label="Cross-section of the knee pad: hard cap, gel cushion, foam and silicone grip lining">
+      <defs>
+        <pattern id="{{ uid }}-foam" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="1.6" fill="var(--drw-ink)" opacity=".2"/></pattern>
+        <pattern id="{{ uid }}-grip" width="18" height="12" patternUnits="userSpaceOnUse"><rect x="4" y="4" width="10" height="4" rx="2" fill="var(--drw-accent)"/></pattern>
+      </defs>
+      <g transform="translate(-30 40)">
+        <path d="M70 250c120-150 400-150 520 0" fill="none" stroke="var(--drw-cap)" stroke-width="44"/>
+        <path d="M48 236c124-168 440-168 564 0" fill="none" stroke="var(--drw-ink)" stroke-width="3"/>
+        <path d="M92 278c112-130 364-130 476 0" fill="none" stroke="var(--drw-gel)" stroke-width="34"/>
+        <path d="M118 318c100-112 324-112 424 0" fill="none" stroke="var(--drw-foam)" stroke-width="48"/>
+        <path d="M118 318c100-112 324-112 424 0" fill="none" stroke="url(#{{ uid }}-foam)" stroke-width="48"/>
+        <path d="M142 350c90-96 286-96 376 0" fill="none" stroke="url(#{{ uid }}-grip)" stroke-width="12"/>
+        <path d="M156 380c84-84 264-84 348 0" fill="none" stroke="var(--drw-ink)" stroke-width="3" stroke-dasharray="10 8" opacity=".45"/>
+        <text x="330" y="420" font-family="Barlow, Arial, sans-serif" font-size="22" fill="var(--drw-muted)" text-anchor="middle">knee</text>
+      </g>
+      <g font-family="Barlow, Arial, sans-serif" fill="var(--drw-ink)" font-size="25" font-weight="600">
+        <g stroke="var(--drw-muted)" stroke-width="1.5" fill="none">
+          <path d="M471 218l58-108h40"/><path d="M479 268l50-54h40"/><path d="M459 315l70-13h40"/><path d="M441 353l88 45h40"/>
+        </g>
+        <g fill="var(--drw-ink)"><circle cx="471" cy="218" r="5"/><circle cx="479" cy="268" r="5"/><circle cx="459" cy="315" r="5"/><circle cx="441" cy="353" r="5"/></g>
+        <text x="580" y="118">Hard shell cap</text>
+        <text x="580" y="222">Gel cushion</text>
+        <text x="580" y="310">Dense foam</text>
+        <text x="580" y="406">Grip lining</text>
+      </g>
+    </svg>
+
+  {%- when 'leg-holdfast', 'leg-slipped' -%}
+    {%- if name == 'leg-slipped' -%}{%- assign pad_transform = 'translate(-22 172) rotate(6 474 404)' -%}{%- else -%}{%- assign pad_transform = '' -%}{%- endif -%}
+    <svg class="drawing" viewBox="0 0 800 800" role="img" aria-label="{% if name == 'leg-slipped' %}A typical strap knee pad that has slid down the shin after standing up{% else %}A Holdfast knee pad still over the knee after standing up{% endif %}">
+      <rect width="800" height="800" fill="var(--drw-bg)"/>
+      <g transform="translate(-110 0)">
+      <path d="M332 30c4 110 30 230 70 330 8 22 6 40-6 62-26 46-44 104-40 170 4 52 24 92 40 128h74c-4-40-2-84 6-126 10-56 20-110 26-156 6-48 30-90 40-128 14-56 14-140 12-280z" fill="#fff" fill-opacity=".55" stroke="var(--drw-ink)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M396 720h74l2 22 96 14c18 3 20 30 0 30H370c-14 0-18-20-8-28z" fill="var(--drw-strap)" stroke="var(--drw-ink)" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="474" cy="404" r="5" fill="var(--drw-muted)"/>
+      <g transform="{{ pad_transform }}">
+        <path d="M500 292c58 4 96 56 96 116s-38 112-96 118c-22-36-30-76-30-118s8-82 30-116z" fill="var(--drw-cap)" stroke="var(--drw-ink)" stroke-width="3"/>
+        <path d="M522 322c34 14 52 48 52 86s-18 72-52 86" fill="none" stroke="var(--drw-ink)" stroke-width="2" opacity=".4"/>
+        <path d="M388 316c40 14 86 16 130 4" fill="none" stroke="var(--drw-ink)" stroke-width="24" stroke-linecap="round"/>
+        <path d="M388 316c40 14 86 16 130 4" fill="none" stroke="var(--drw-strap)" stroke-width="17" stroke-linecap="round"/>
+        <path d="M370 506c46-8 94-8 138 2" fill="none" stroke="var(--drw-ink)" stroke-width="24" stroke-linecap="round"/>
+        <path d="M370 506c46-8 94-8 138 2" fill="none" stroke="var(--drw-strap)" stroke-width="17" stroke-linecap="round"/>
+      </g>
+      <g font-family="Barlow, Arial, sans-serif" fill="var(--drw-muted)" font-size="22">
+        <path d="M480 404h120" stroke="var(--drw-muted)" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <text x="610" y="411">knee</text>
+      </g>
+      </g>
+    </svg>
+
+  {%- when 'strap' -%}
+    <svg class="drawing" viewBox="0 0 800 600" role="img" aria-label="Close-up of the strap's silicone grip lining">
+      <defs>
+        <pattern id="{{ uid }}-dots" width="26" height="22" patternUnits="userSpaceOnUse"><rect x="5" y="7" width="16" height="7" rx="3.5" fill="var(--drw-accent)" opacity=".85"/></pattern>
+      </defs>
+      <rect x="40" y="200" width="640" height="200" rx="100" fill="var(--drw-strap)" stroke="var(--drw-ink)" stroke-width="3"/>
+      <rect x="80" y="236" width="560" height="128" rx="64" fill="url(#{{ uid }}-dots)"/>
+      <path d="M70 222h580M70 378h580" stroke="var(--drw-bg)" stroke-width="2" stroke-dasharray="8 8" opacity=".55"/>
+      <rect x="640" y="180" width="120" height="240" rx="18" fill="var(--drw-cap)" stroke="var(--drw-ink)" stroke-width="3"/>
+      <rect x="668" y="236" width="64" height="128" rx="8" fill="var(--drw-bg)" stroke="var(--drw-ink)" stroke-width="3"/>
+      <g font-family="Barlow, Arial, sans-serif" fill="var(--drw-muted)" font-size="26">
+        <path d="M300 300V470" stroke="var(--drw-muted)" stroke-width="1.5"/><circle cx="300" cy="300" r="4"/>
+        <text x="300" y="506" text-anchor="middle">Silicone grip strips hold onto your pants</text>
+      </g>
+    </svg>
+{%- endcase -%}

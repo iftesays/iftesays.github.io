@@ -1,19 +1,20 @@
 {%- comment -%} Usage: {% render 'product-card', product: product %} {%- endcomment -%}
-<article class="card reveal">
-  <a href="{{ product.url }}" class="card__media">
-    {%- if product.featured_media -%}
-      {%- assign alt = product.featured_media.alt | default: product.title -%}
-      {{ product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 33vw, 90vw', alt: alt }}
-    {%- else -%}
-      {% render 'product-art', key: product.id %}
-    {%- endif -%}
-    {%- if product.compare_at_price_max > product.price_min -%}<span class="card__badge">Bundle &amp; save</span>{%- endif -%}
-  </a>
-  <div class="card__body">
-    <h3 class="card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
-    <p class="card__price">
-      {%- if product.price_varies -%}From {% endif -%}{{ product.price_min | money }}
-    </p>
-    <a href="{{ product.url }}" class="btn btn--ink btn--small">Shop now {% render 'icon', name: 'arrow' %}</a>
-  </div>
-</article>
+<a href="{{ product.url }}" class="card reveal">
+  {%- if product.featured_media -%}
+    {%- assign alt = product.featured_media.alt | default: product.title -%}
+    <div class="media media--product media--zoom">
+      {{ product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw', alt: alt }}
+      {%- if product.media.size > 1 -%}
+        <div class="card__media-secondary">{{ product.media[1] | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw', alt: '' }}</div>
+      {%- endif -%}
+      {%- if product.compare_at_price_max > product.price_min -%}<span class="badge card__badge">Save on 2 pairs</span>{%- endif -%}
+    </div>
+  {%- else -%}
+    <div class="media media--drawing">
+      {% render 'drawing', name: 'front', uid: product.id %}
+      {%- if product.compare_at_price_max > product.price_min -%}<span class="badge card__badge">Save on 2 pairs</span>{%- endif -%}
+    </div>
+  {%- endif -%}
+  <h3 class="card__title">{{ product.title }}</h3>
+  <p class="card__price">{% if product.price_varies %}From {% endif %}{{ product.price_min | money }}</p>
+</a>

@@ -1,16 +1,19 @@
 {%- if section.blocks.size > 0 -%}
-<div class="announce" data-announce>
-  <div class="announce__track">
-    {%- for i in (1..2) -%}
-      <div class="announce__group" {% if i == 2 %}aria-hidden="true"{% endif %}>
-        {%- for block in section.blocks -%}
-          <span class="announce__item" {{ block.shopify_attributes }}>
-            {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.text }}</a>{%- else -%}{{ block.settings.text }}{%- endif -%}
-          </span>
-          <span class="announce__dot" aria-hidden="true">✦</span>
-        {%- endfor -%}
-      </div>
-    {%- endfor -%}
+<div class="announcement{% if section.blocks.size == 1 %} announcement--single{% endif %}" data-announcement role="region" aria-label="Announcements">
+  <div class="page-width announcement__inner">
+    <button type="button" class="announcement__nav announcement__nav--prev" data-announcement-prev aria-label="Previous announcement">{% render 'icon', name: 'chevron' %}</button>
+    <div class="announcement__slides">
+      {%- for block in section.blocks -%}
+        <p class="announcement__slide{% if forloop.first %} is-active{% endif %}" {% unless forloop.first %}aria-hidden="true"{% endunless %} {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+          {%- else -%}
+            {{ block.settings.text }}
+          {%- endif -%}
+        </p>
+      {%- endfor -%}
+    </div>
+    <button type="button" class="announcement__nav announcement__nav--next" data-announcement-next aria-label="Next announcement">{% render 'icon', name: 'chevron' %}</button>
   </div>
 </div>
 {%- endif -%}
@@ -18,14 +21,15 @@
 {% schema %}
 {
   "name": "Announcement bar",
-  "class": "section-announce",
+  "class": "section-announcement",
   "enabled_on": { "groups": ["header"] },
+  "max_blocks": 4,
   "blocks": [
     {
       "type": "message",
       "name": "Message",
       "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "Free US shipping on every order" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Free US shipping and 30-day returns" },
         { "type": "url", "id": "link", "label": "Link" }
       ]
     }

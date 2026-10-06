@@ -2,123 +2,90 @@
   "sections": {
     "main": {
       "type": "main-page",
-      "settings": {}
+      "settings": {
+        "compact": true
+      }
     },
-    "features": {
-      "type": "features",
+    "how": {
+      "type": "hotspots",
       "blocks": {
-        "f1": {
-          "type": "feature",
+        "h1": {
+          "type": "hotspot",
           "settings": {
-            "icon": "grip",
-            "title": "They stay up",
-            "text": "<p>A silicone grip band inside each strap holds onto your work pants. Kneel, stand, climb the ladder, kneel again. The pads stay where you put them.</p>"
+            "title": "Hard shell cap",
+            "text": "Stands up to concrete, gravel and loose screws, so the cushion underneath lasts longer.",
+            "x": 50,
+            "y": 46
           }
         },
-        "f2": {
-          "type": "feature",
+        "h2": {
+          "type": "hotspot",
           "settings": {
-            "icon": "strap",
-            "title": "Cushion without the tourniquet",
-            "text": "<p>Pads that only stay up because they're cranked tight leave your legs numb by lunch. Wide split straps sit above and below the joint, so they hold without squeezing.</p>"
+            "title": "Gel cushion over foam",
+            "text": "Gel spreads your weight across the pad instead of the point of your kneecap. High-density foam underneath keeps it supported through a full day.",
+            "x": 40,
+            "y": 71
           }
         },
-        "f3": {
-          "type": "feature",
+        "h3": {
+          "type": "hotspot",
           "settings": {
-            "icon": "drop",
-            "title": "Your knees don't grow back",
-            "text": "<p>Years on tile and subfloor add up. Gel over dense foam takes the pressure off the kneecap, so you can still kneel at the end of the week and at the end of a career.</p>"
+            "title": "Two adjustable straps",
+            "text": "One strap sits above the knee and one below, so neither has to be cranked tight and nothing presses into the back of your knee.",
+            "x": 77,
+            "y": 34
+          }
+        },
+        "h4": {
+          "type": "hotspot",
+          "settings": {
+            "title": "Silicone grip lining",
+            "text": "A silicone strip inside each strap holds onto your pant leg, so the pad stays over your knee when you stand, walk or climb a ladder.",
+            "x": 25,
+            "y": 34
           }
         }
       },
       "block_order": [
-        "f1",
-        "f2",
-        "f3"
+        "h1",
+        "h2",
+        "h3",
+        "h4"
       ],
       "settings": {
-        "anchor": "features",
-        "kicker": "What we stand for",
-        "heading": "Three promises, one pad",
-        "center": false,
-        "dark": true
+        "anchor": "",
+        "heading": "How they're built",
+        "text": "Select a point on the pad to see what it does.",
+        "alt_background": false
       }
     },
-    "stats": {
-      "type": "stats",
-      "blocks": {
-        "s1": {
-          "type": "stat",
-          "settings": {
-            "number": 4,
-            "suffix": "",
-            "label": "layers between your knee and the floor"
-          }
-        },
-        "s2": {
-          "type": "stat",
-          "settings": {
-            "number": 2,
-            "suffix": "",
-            "label": "wide straps, above & below the joint"
-          }
-        },
-        "s3": {
-          "type": "stat",
-          "settings": {
-            "number": 0,
-            "suffix": "",
-            "label": "tourniquets behind your knee"
-          }
-        },
-        "s4": {
-          "type": "stat",
-          "settings": {
-            "number": 30,
-            "suffix": "-day",
-            "label": "stay-up guarantee"
-          }
-        }
-      },
-      "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
+    "returns": {
+      "type": "banner",
       "settings": {
-        "style": "ink"
-      }
-    },
-    "guarantee": {
-      "type": "guarantee",
-      "settings": {
-        "anchor": "guarantee",
-        "kicker": "Zero risk",
-        "days": "30",
-        "ring_text": "Stay-up guarantee",
-        "heading": "Wear them on the job. If they slide, send them back.",
-        "text": "<p>Put them through a real work week. If they slide down or leave your legs numb, contact us within 30 days of delivery and we'll make it right with a refund.</p>",
-        "button_label": "Try them risk-free",
-        "button_link": "/products/holdfast-anti-slip-work-knee-pads"
+        "icon": "return",
+        "heading": "30-day returns",
+        "text": "<p>Wear them on the job for a full week. If they slide down, pinch, or just aren't right for you, contact us within 30 days of delivery for a full refund.</p>",
+        "button_label": "How returns work",
+        "button_link": "/pages/faq",
+        "background": "alt"
       }
     },
     "cta": {
-      "type": "cta-banner",
+      "type": "rich-text",
       "settings": {
-        "heading": "Stop pulling your knee pads up.",
-        "text": "Pads that stay put and don't cut off circulation.",
-        "button_label": "Shop Holdfast",
-        "button_link": "/products/holdfast-anti-slip-work-knee-pads"
+        "heading": "Questions?",
+        "text": "<p>Send us a message about sizing, an order or a return.</p>",
+        "button_label": "Contact us",
+        "button_link": "/pages/contact",
+        "center": true,
+        "background": "none"
       }
     }
   },
   "order": [
     "main",
-    "features",
-    "stats",
-    "guarantee",
+    "how",
+    "returns",
     "cta"
   ]
 }

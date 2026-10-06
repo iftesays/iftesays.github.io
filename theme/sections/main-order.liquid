@@ -1,7 +1,7 @@
 <section class="section">
-  <div class="wrap wrap--mid">
-    <a href="{{ routes.account_url }}" class="label-mono label-mono--accent">← Account</a>
-    <h1 class="h1">Order {{ order.name }}</h1>
+  <div class="page-width page-width--medium">
+    <a href="{{ routes.account_url }}" class="text-muted">← Account</a>
+    <h1 class="h2">Order {{ order.name }}</h1>
     <p>Placed {{ order.created_at | date: '%B %d, %Y' }}{% if order.cancelled %} · Cancelled: {{ order.cancel_reason_label }}{% endif %}</p>
     <div class="table-wrap">
       <table class="table">

@@ -1,0 +1,75 @@
+{%- comment -%}
+  Product media gallery. Shows product photos/videos when the product has
+  media, otherwise a set of technical drawings.
+  Usage: {% render 'product-gallery', product: product, uid: section.id %}
+{%- endcomment -%}
+{%- assign has_media = false -%}
+{%- if product.media.size > 0 -%}{%- assign has_media = true -%}{%- endif -%}
+{%- assign drawings = 'front,side,section,pair' | split: ',' -%}
+{%- if has_media -%}{%- assign count = product.media.size -%}{%- else -%}{%- assign count = drawings.size -%}{%- endif -%}
+
+<div class="gallery" data-gallery>
+  <div class="gallery__main">
+    <div class="gallery__viewport" tabindex="0" role="region" aria-roledescription="carousel" aria-label="{{ product.title | escape }} images">
+      {%- if has_media -%}
+        {%- for media in product.media -%}
+          <div class="gallery__slide{% if forloop.first %} is-active{% endif %}" data-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} of {{ count }}">
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                {%- liquid
+                  assign alt = media.alt | default: product.title
+                  if forloop.first
+                    assign loading = 'eager'
+                  else
+                    assign loading = 'lazy'
+                  endif
+                -%}
+                {{ media | image_url: width: 1600 | image_tag: loading: loading, widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 58vw, 100vw', alt: alt }}
+              {%- when 'video' -%}
+                {{ media | video_tag: image_size: '1600x', autoplay: false, loop: true, controls: true, muted: true, playsinline: true }}
+              {%- when 'external_video' -%}
+                {{ media | external_video_tag }}
+              {%- else -%}
+                {{ media | media_tag }}
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for name in drawings -%}
+          <div class="gallery__slide gallery__slide--drawing{% if forloop.first %} is-active{% endif %}" data-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} of {{ count }}">
+            {% render 'drawing', name: name, uid: uid %}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+    {%- if count > 1 -%}
+      <button type="button" class="gallery__arrow gallery__arrow--prev" data-gallery-prev aria-label="Previous image">{% render 'icon', name: 'arrow' %}</button>
+      <button type="button" class="gallery__arrow gallery__arrow--next" data-gallery-next aria-label="Next image">{% render 'icon', name: 'arrow' %}</button>
+      <span class="gallery__counter" data-counter aria-hidden="true">1 / {{ count }}</span>
+    {%- endif -%}
+  </div>
+
+  {%- if count > 1 -%}
+    <div class="gallery__thumbs">
+      {%- if has_media -%}
+        {%- for media in product.media -%}
+          <button type="button" class="gallery__thumb{% if forloop.first %} is-active{% endif %}" data-thumb aria-label="Show image {{ forloop.index }}">
+            {{ media.preview_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}
+          </button>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for name in drawings -%}
+          {%- capture thumb_uid -%}{{ uid }}-t{%- endcapture -%}
+          <button type="button" class="gallery__thumb{% if forloop.first %} is-active{% endif %}" data-thumb aria-label="Show drawing {{ forloop.index }}">
+            {% render 'drawing', name: name, uid: thumb_uid %}
+          </button>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+    <div class="gallery__dots">
+      {%- for i in (1..count) -%}
+        <button type="button" class="gallery__dot{% if forloop.first %} is-active{% endif %}" data-dot aria-label="Show image {{ i }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>

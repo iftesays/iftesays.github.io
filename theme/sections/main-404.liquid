@@ -1,11 +1,11 @@
-<section class="section center four">
-  <div class="wrap wrap--narrow">
-    <p class="four__num">404</p>
-    <h1 class="h1">This page slid down.</h1>
-    <p>Unlike our knee pads. Let's get you back on track.</p>
-    <a href="{{ routes.root_url }}" class="btn btn--accent">Back to home</a>
+<div class="page-width not-found">
+  <h1>Page not found</h1>
+  <p>The page you're looking for has moved or doesn't exist.</p>
+  <div class="hero__buttons" style="justify-content: center">
+    <a href="{{ settings.primary_product.url | default: routes.all_products_collection_url }}" class="btn">Shop knee pads</a>
+    <a href="{{ routes.root_url }}" class="btn btn--secondary">Go to homepage</a>
   </div>
-</section>
+</div>
 
 {% schema %}
 { "name": "404", "class": "section-404", "settings": [] }

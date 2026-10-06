@@ -1,0 +1,41 @@
+<section class="section{% if section.settings.background == 'alt' %} section--alt{% elsif section.settings.background == 'dark' %} section--dark{% endif %}" {% if section.settings.anchor != blank %}id="{{ section.settings.anchor }}"{% endif %}>
+  <div class="page-width">
+    <div class="banner reveal">
+      <div class="banner__icon">{% render 'icon', name: section.settings.icon %}</div>
+      <div class="banner__content">
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.text != blank -%}<div class="rte">{{ section.settings.text }}</div>{%- endif -%}
+      </div>
+      {%- if section.settings.button_label != blank -%}
+        <div><a href="{{ section.settings.button_link }}" class="btn {% if section.settings.background == 'dark' %}btn--outline-light{% else %}btn--secondary{% endif %}">{{ section.settings.button_label }}</a></div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Banner",
+  "class": "section-banner",
+  "settings": [
+    { "type": "select", "id": "icon", "label": "Icon", "default": "return", "options": [
+      { "value": "return", "label": "Return" },
+      { "value": "shield", "label": "Shield" },
+      { "value": "truck", "label": "Truck" },
+      { "value": "chat", "label": "Chat" },
+      { "value": "mail", "label": "Mail" }
+    ] },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "30-day returns" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Wear them on the job for a full week. If they slide down, pinch, or just aren't right for you, contact us within 30 days of delivery for a full refund.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Read the return policy" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "select", "id": "background", "label": "Background", "default": "alt", "options": [
+      { "value": "none", "label": "Default" },
+      { "value": "alt", "label": "Alternate" },
+      { "value": "dark", "label": "Dark" }
+    ] }
+  ],
+  "presets": [{ "name": "Banner" }]
+}
+{% endschema %}

@@ -5,13 +5,39 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "holdfast-main" } },
-        "help": { "type": "menu", "settings": { "heading": "Help", "menu": "holdfast-help" } },
-        "news": { "type": "newsletter", "settings": { "heading": "Job-site intel", "text": "Restocks, new gear, and no spam. Unsubscribe anytime." } }
+        "shop": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "holdfast-main"
+          }
+        },
+        "help": {
+          "type": "menu",
+          "settings": {
+            "heading": "Help",
+            "menu": "holdfast-help"
+          }
+        },
+        "news": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Email sign-up",
+            "text": "Get restock alerts and new product news."
+          }
+        }
       },
-      "block_order": ["shop", "help", "news"],
-      "settings": { "wordmark": "HOLDFAST" }
+      "block_order": [
+        "shop",
+        "help",
+        "news"
+      ],
+      "settings": {
+        "wordmark": "Holdfast"
+      }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

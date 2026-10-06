@@ -1,28 +1,24 @@
-<section class="section">
-  <div class="wrap">
-    <p class="label-mono label-mono--accent">Journal</p>
-    <h1 class="h1">{{ blog.title }}</h1>
-    {%- paginate blog.articles by 9 -%}
-      <div class="grid grid--cards">
-        {%- for article in blog.articles -%}
-          <a href="{{ article.url }}" class="card reveal">
-            <div class="card__media">
-              {%- if article.image -%}{{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', alt: article.title }}{%- else -%}{% render 'product-art', key: article.id %}{%- endif -%}
-            </div>
-            <div class="card__body">
-              <span class="label-mono">{{ article.published_at | date: '%b %d, %Y' }}</span>
-              <h2 class="card__title">{{ article.title }}</h2>
-              <p>{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p>
-            </div>
-          </a>
-        {%- else -%}
-          <p class="empty">No posts yet.</p>
-        {%- endfor -%}
-      </div>
-      {%- if paginate.pages > 1 -%}<nav class="pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
-    {%- endpaginate -%}
-  </div>
-</section>
+<div class="page-width">
+  <header class="page-header"><h1>{{ blog.title }}</h1></header>
+  {%- paginate blog.articles by 9 -%}
+    <div class="grid">
+      {%- for article in blog.articles -%}
+        <a href="{{ article.url }}" class="card reveal">
+          {%- if article.image -%}
+            {%- assign alt = article.image.alt | default: article.title -%}
+            <div class="media media--landscape media--zoom">{{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 33vw, 100vw', alt: alt }}</div>
+          {%- endif -%}
+          <h2 class="card__title">{{ article.title }}</h2>
+          <p class="card__price">{{ article.published_at | date: '%B %-d, %Y' }}</p>
+        </a>
+      {%- else -%}
+        <p class="empty-state">No posts yet.</p>
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="Pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
+  {%- endpaginate -%}
+</div>
+<div style="height: var(--section-space)"></div>
 
 {% schema %}
 { "name": "Blog", "class": "section-main-blog", "settings": [] }

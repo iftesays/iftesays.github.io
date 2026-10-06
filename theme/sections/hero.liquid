@@ -1,70 +1,57 @@
-{%- assign product = section.settings.product -%}
-<section class="hero" data-section-id="{{ section.id }}">
-  <div class="hero__bg" aria-hidden="true">
-    <span class="hero__big">{{ section.settings.backdrop_word }}</span>
+{%- assign image = section.settings.image -%}
+{%- capture content -%}
+  {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+  <h1>{{ section.settings.heading }}</h1>
+  {%- if section.settings.text != blank -%}<div class="hero__text">{{ section.settings.text }}</div>{%- endif -%}
+  <div class="hero__buttons">
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="btn{% if image != blank %} btn--light{% endif %}">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+    {%- if section.settings.button_2_label != blank -%}
+      <a href="{{ section.settings.button_2_link }}" class="btn {% if image != blank %}btn--outline-light{% else %}btn--secondary{% endif %}">{{ section.settings.button_2_label }}</a>
+    {%- endif -%}
   </div>
-  <div class="wrap hero__grid">
-    <div class="hero__copy">
-      <p class="label-mono hero__kicker reveal"><span class="pulse-dot"></span>{{ section.settings.kicker }}</p>
-      <h1 class="hero__title reveal">
-        {{ section.settings.heading_line_1 }}
-        <span class="hero__swap" data-word-swap="{{ section.settings.swap_words | escape }}">
-          <span class="hero__swap-word">{{ section.settings.swap_words | split: ',' | first | strip }}</span>
-        </span>
-      </h1>
-      <div class="hero__text rte reveal">{{ section.settings.text }}</div>
-      <div class="hero__ctas reveal">
-        {%- if section.settings.button_link != blank -%}
-          <a href="{{ section.settings.button_link }}" class="btn btn--accent btn--big">{{ section.settings.button_label }} {% render 'icon', name: 'arrow' %}</a>
-        {%- endif -%}
-        {%- if section.settings.button_2_link != blank -%}
-          <a href="{{ section.settings.button_2_link }}" class="btn btn--ghost btn--big">{{ section.settings.button_2_label }}</a>
-        {%- endif -%}
-      </div>
-      <ul class="hero__proof reveal">
-        <li>{% render 'icon', name: 'truck' %} Free US shipping</li>
-        <li>{% render 'icon', name: 'shield' %} 30-day guarantee</li>
-        {%- if product != blank -%}<li>{% render 'icon', name: 'check' %} From {{ product.price_min | money }}</li>{%- endif -%}
-      </ul>
-    </div>
+  {%- if section.settings.note != blank -%}
+    <ul class="hero__note">
+      {%- assign notes = section.settings.note | split: '·' -%}
+      {%- for n in notes -%}<li>{% render 'icon', name: 'check' %}{{ n | strip }}</li>{%- endfor -%}
+    </ul>
+  {%- endif -%}
+{%- endcapture -%}
 
-    <div class="hero__visual reveal">
-      <div class="hero__stage">
-        <div class="hero__ring" aria-hidden="true"></div>
-        <div class="hero__float">
-          {%- if section.settings.image != blank -%}
-            {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 900, 1200', sizes: '(min-width: 990px) 45vw, 90vw', class: 'hero__img' }}
-          {%- elsif product.featured_media -%}
-            {{ product.featured_media | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 900, 1200', sizes: '(min-width: 990px) 45vw, 90vw', class: 'hero__img' }}
-          {%- else -%}
-            {% render 'product-art', key: 'hero' %}
-          {%- endif -%}
-        </div>
-        <span class="callout callout--a"><b>01</b> Anti-slip grip lining</span>
-        <span class="callout callout--b"><b>02</b> Gel over dense foam</span>
-        <span class="callout callout--c"><b>03</b> Split straps, no tourniquet</span>
-        <span class="callout callout--d"><b>04</b> Hard pivot cap</span>
-      </div>
+{%- if image != blank -%}
+  <section class="hero">
+    <div class="hero__media">
+      {%- assign alt = image.alt | default: '' -%}
+      {{ image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 1800, 2400', sizes: '100vw', alt: alt }}
     </div>
-  </div>
-</section>
+    <div class="page-width hero__content">
+      <div>{{ content }}</div>
+    </div>
+  </section>
+{%- else -%}
+  <section class="hero hero--split">
+    <div class="page-width hero__grid">
+      <div class="hero__content">{{ content }}</div>
+      <div class="hero__drawing">{% render 'drawing', name: 'pair', uid: section.id %}</div>
+    </div>
+  </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Hero",
   "class": "section-hero",
   "settings": [
-    { "type": "product", "id": "product", "label": "Product (for image and price)" },
-    { "type": "image_picker", "id": "image", "label": "Image override", "info": "Transparent PNG of the product looks best." },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "For flooring, tile, HVAC, electrical & plumbing" },
-    { "type": "text", "id": "heading_line_1", "label": "Heading", "default": "Knee pads that" },
-    { "type": "text", "id": "swap_words", "label": "Rotating words (comma separated)", "default": "stay up., don't slide., don't pinch., go all day." },
-    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Every pair you've owned either slides to your ankles or cuts off your circulation. Holdfast grips without squeezing, so they're still on your knees when you stand back up.</p>" },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Holdfast" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "A wide photo of the pads in use, at least 2400px wide. Text sits on the left, so keep the subject to the right. Without an image, a split layout with a product drawing is shown." },
+    { "type": "text", "id": "eyebrow", "label": "Small heading" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Work knee pads that stay up" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Hard shell cap, gel cushion and two adjustable straps with a silicone grip lining. The straps hold onto your pant legs instead of squeezing the back of your knee, so the pads stay put when you stand up.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop knee pads" },
     { "type": "url", "id": "button_link", "label": "Button link" },
-    { "type": "text", "id": "button_2_label", "label": "Second button label", "default": "See why they stay up" },
-    { "type": "text", "id": "button_2_link", "label": "Second button link", "info": "A URL or an anchor such as #slip-test" },
-    { "type": "text", "id": "backdrop_word", "label": "Backdrop word", "default": "HOLDFAST" }
+    { "type": "text", "id": "button_2_label", "label": "Second button label", "default": "See how they work" },
+    { "type": "text", "id": "button_2_link", "label": "Second button link", "info": "A URL or an anchor on this page, such as #how", "default": "#how" },
+    { "type": "text", "id": "note", "label": "Note under buttons", "info": "Separate items with ·", "default": "Free US shipping · 30-day returns" }
   ],
   "presets": [{ "name": "Hero" }]
 }

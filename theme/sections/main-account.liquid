@@ -1,8 +1,8 @@
 <section class="section">
-  <div class="wrap wrap--mid">
-    <p class="label-mono label-mono--accent">Account</p>
-    <h1 class="h1">Hey {{ customer.first_name | default: 'there' }}.</h1>
-    <p><a href="{{ routes.account_logout_url }}" class="link-btn">Log out</a> · <a href="{{ routes.account_addresses_url }}" class="link-btn">Addresses ({{ customer.addresses_count }})</a></p>
+  <div class="page-width page-width--medium">
+    <p class="text-muted">Account</p>
+    <h1 class="h2">Welcome back{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}</h1>
+    <p><a href="{{ routes.account_logout_url }}" class="link-plain">Log out</a> · <a href="{{ routes.account_addresses_url }}" class="link-plain">Addresses ({{ customer.addresses_count }})</a></p>
     <h2 class="h3">Order history</h2>
     {%- paginate customer.orders by 20 -%}
       {%- if customer.orders.size > 0 -%}
@@ -23,7 +23,7 @@
           </table>
         </div>
       {%- else -%}
-        <p class="empty">No orders yet.</p>
+        <p class="empty-state">No orders yet.</p>
       {%- endif -%}
       {%- if paginate.pages > 1 -%}<nav class="pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
     {%- endpaginate -%}

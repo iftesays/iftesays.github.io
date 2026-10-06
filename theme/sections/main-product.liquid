@@ -1,75 +1,61 @@
 {%- assign current = product.selected_or_first_available_variant -%}
-<section class="product-main" data-product-main>
-  <div class="wrap product-main__grid">
-    <div class="gallery" data-gallery>
-      <div class="gallery__stage">
-        {%- if product.media.size > 0 -%}
-          {%- for media in product.media -%}
-            <div class="gallery__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}">
-              {%- case media.media_type -%}
-                {%- when 'image' -%}
-                  {%- if forloop.first -%}{%- assign loading = 'eager' -%}{%- else -%}{%- assign loading = 'lazy' -%}{%- endif -%}
-                  {%- assign alt = media.alt | default: product.title -%}
-                  {{ media | image_url: width: 1400 | image_tag: loading: loading, widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 55vw, 100vw', alt: alt }}
-                {%- when 'video', 'external_video' -%}
-                  {{ media | media_tag: image_size: '1400x', autoplay: false, loop: true, controls: true, muted: true }}
-                {%- else -%}
-                  {{ media | media_tag }}
-              {%- endcase -%}
-            </div>
-          {%- endfor -%}
-        {%- else -%}
-          <div class="gallery__slide is-active" data-slide="0">{% render 'product-art', key: 'g1' %}</div>
-          <div class="gallery__slide" data-slide="1">{% render 'product-art', key: 'g2', pair: true %}</div>
-        {%- endif -%}
-        <span class="sticker sticker--tl">Stays up</span>
-      </div>
-      {%- assign thumb_count = product.media.size -%}
-      {%- if thumb_count == 0 -%}{%- assign thumb_count = 2 -%}{%- endif -%}
-      {%- if thumb_count > 1 -%}
-        <div class="gallery__thumbs" role="tablist">
-          {%- if product.media.size > 0 -%}
-            {%- for media in product.media -%}
-              <button type="button" class="gallery__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">
-                {{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
-              </button>
-            {%- endfor -%}
-          {%- else -%}
-            <button type="button" class="gallery__thumb is-active" data-thumb="0" aria-label="Show single pad">{% render 'product-art', key: 't1' %}</button>
-            <button type="button" class="gallery__thumb" data-thumb="1" aria-label="Show pair">{% render 'product-art', key: 't2', pair: true %}</button>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
+{%- liquid
+  assign save_percent = 0
+  if current.compare_at_price > current.price
+    assign save_percent = current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price | floor
+  endif
+-%}
+<section class="section section--tight-top" data-product style="padding-top: 32px">
+  <div class="page-width product">
+    <div class="product__media">
+      {% render 'product-gallery', product: product, uid: section.id %}
     </div>
 
-    <div class="product-info">
-      <nav class="crumbs label-mono" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / <a href="{{ routes.all_products_collection_url }}">Shop</a></nav>
-      <h1 class="product-info__title">{{ product.title }}</h1>
-      <div class="product-info__price" data-main-price>
-        {%- if current.compare_at_price > current.price -%}<s data-compare-display>{{ current.compare_at_price | money }}</s>{%- else -%}<s data-compare-display hidden></s>{%- endif -%}
-        <strong data-price-display>{{ current.price | money }}</strong>
-        <span class="tag-free">Free shipping</span>
+    <div class="product__info">
+      <nav class="product__breadcrumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a> / <span aria-current="page">{{ product.title }}</span>
+      </nav>
+      <h1 class="product__title">{{ product.title }}</h1>
+      <div class="product__price">
+        <span data-price>{{ current.price | money }}</span>
+        <s data-compare-price {% unless save_percent > 0 %}hidden{% endunless %}>{% if save_percent > 0 %}{{ current.compare_at_price | money }}{% endif %}</s>
+        <span class="badge" data-save-badge {% unless save_percent > 0 %}hidden{% endunless %}>{% if save_percent > 0 %}Save {{ save_percent }}%{% endif %}</span>
       </div>
-      {%- if section.settings.subtitle != blank -%}<p class="product-info__sub">{{ section.settings.subtitle }}</p>{%- endif -%}
 
       {%- for block in section.blocks -%}
         {%- case block.type -%}
-          {%- when 'ticks' -%}
-            <ul class="ticks" {{ block.shopify_attributes }}>
-              {%- assign ticks = block.settings.lines | newline_to_br | split: '<br />' -%}
-              {%- for t in ticks -%}{%- assign tt = t | strip -%}{%- if tt != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ tt }}</span></li>{%- endif -%}{%- endfor -%}
+          {%- when 'text' -%}
+            <div class="product__subtitle rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+          {%- when 'highlights' -%}
+            <ul class="product__highlights" {{ block.shopify_attributes }}>
+              {%- assign lines = block.settings.lines | newline_to_br | split: '<br />' -%}
+              {%- for line in lines -%}
+                {%- assign l = line | strip -%}
+                {%- if l != blank -%}<li>{% render 'icon', name: 'check' %}<span>{{ l }}</span></li>{%- endif -%}
+              {%- endfor -%}
             </ul>
-          {%- when 'buy_box' -%}
-            <div id="buy" {{ block.shopify_attributes }}>{% render 'buy-box', product: product, section: section, show_payment_button: block.settings.show_payment_button %}</div>
+
+          {%- when 'buy_buttons' -%}
+            <div {{ block.shopify_attributes }}>
+              {% render 'buy-box', product: product, section: section, main: true, show_payment_button: block.settings.show_payment_button, show_quantity: block.settings.show_quantity, show_perks: true %}
+            </div>
+
           {%- when 'collapsible' -%}
-            <details class="faq__item faq__item--flat" {{ block.shopify_attributes }} {% if block.settings.open %}open{% endif %}>
-              <summary><span>{{ block.settings.heading }}</span><i aria-hidden="true">{% render 'icon', name: 'plus' %}</i></summary>
-              <div class="faq__answer rte">
-                {%- if block.settings.use_description -%}{{ product.description }}{%- else -%}{{ block.settings.content }}{%- endif -%}
+            {%- assign prev_index = forloop.index0 | minus: 1 -%}
+            {%- if forloop.first or section.blocks[prev_index].type != 'collapsible' -%}<div class="product__accordions">{%- endif -%}
+            <details class="accordion" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.heading }}{% render 'icon', name: 'plus' %}</summary>
+              <div class="accordion__content rte">
+                {%- if block.settings.source == 'description' -%}
+                  {{ product.description }}
+                {%- else -%}
+                  {{ block.settings.content }}
+                {%- endif -%}
               </div>
             </details>
-          {%- when 'note' -%}
-            <div class="note" {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon %}<div class="rte">{{ block.settings.text }}</div></div>
+            {%- assign next_index = forloop.index0 | plus: 1 -%}
+            {%- if forloop.last or section.blocks[next_index].type != 'collapsible' -%}</div>{%- endif -%}
         {%- endcase -%}
       {%- endfor -%}
     </div>
@@ -77,12 +63,19 @@
 </section>
 
 <div class="sticky-atc" data-sticky-atc aria-hidden="true">
-  <div class="wrap sticky-atc__inner">
+  <div class="page-width sticky-atc__inner">
+    <div class="sticky-atc__media">
+      {%- if product.featured_media -%}
+        <div class="media media--product">{{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}</div>
+      {%- else -%}
+        <div class="media media--drawing">{% render 'drawing', name: 'front', uid: 'sticky' %}</div>
+      {%- endif -%}
+    </div>
     <div class="sticky-atc__info">
       <strong>{{ product.title }}</strong>
-      <span><span data-sticky-variant>{{ current.title }}</span> · <span data-sticky-price>{{ current.price | money }}</span></span>
+      <span>{% unless product.has_only_default_variant %}<span data-sticky-variant>{{ current.title }}</span> · {% endunless %}<span data-sticky-price>{{ current.price | money }}</span></span>
     </div>
-    <button type="button" class="btn btn--accent" data-sticky-add>Add to cart</button>
+    <button type="button" class="btn" data-sticky-add tabindex="-1">Add to cart</button>
   </div>
 </div>
 
@@ -91,19 +84,22 @@
   "@context": "https://schema.org/",
   "@type": "Product",
   "name": {{ product.title | json }},
+  "url": {{ request.origin | append: product.url | json }},
   "description": {{ product.description | strip_html | json }},
   "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
-  {%- if product.featured_media -%}"image": [{{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }}],{%- endif -%}
+  {%- if product.featured_media -%}
+  "image": [{{ product.featured_media | image_url: width: 1600 | prepend: 'https:' | json }}],
+  {%- endif -%}
   "offers": [
     {%- for variant in product.variants -%}
     {
       "@type": "Offer",
-      "sku": {{ variant.sku | json }},
+      {%- if variant.sku != blank -%}"sku": {{ variant.sku | json }},{%- endif -%}
       "name": {{ variant.title | json }},
       "price": {{ variant.price | divided_by: 100.0 | json }},
       "priceCurrency": {{ cart.currency.iso_code | json }},
-      "availability": "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
-      "url": "{{ request.origin }}{{ variant.url }}"
+      "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+      "url": {{ request.origin | append: variant.url | json }}
     }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ]
@@ -112,47 +108,43 @@
 
 {% schema %}
 {
-  "name": "Product",
+  "name": "Product information",
   "class": "section-main-product",
-  "settings": [
-    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Anti-slip retention. Gel cushion. Hard cap. Built for the kneeling trades." }
-  ],
   "blocks": [
     {
-      "type": "ticks",
-      "name": "Benefit list",
-      "limit": 1,
+      "type": "text",
+      "name": "Text",
       "settings": [
-        { "type": "textarea", "id": "lines", "label": "Lines (one per line)", "default": "Anti-slip silicone lining grips your pants\nSplit straps: no tourniquet behind the knee\nGel cushion over high-density foam\nHard cap slides on tile, pivots on subfloor" }
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Hard cap knee pads with a gel cushion and silicone-lined straps that grip your pants instead of squeezing your leg.</p>" }
       ]
     },
     {
-      "type": "buy_box",
-      "name": "Buy box",
+      "type": "highlights",
+      "name": "Highlights",
       "limit": 1,
       "settings": [
-        { "type": "checkbox", "id": "show_payment_button", "label": "Show dynamic checkout button", "default": true }
+        { "type": "textarea", "id": "lines", "label": "Lines", "info": "One per line.", "default": "Silicone grip lining holds onto your pant legs\nTwo adjustable straps, one above and one below the knee\nGel cushion over high-density foam\nHard shell cap for concrete, tile and subfloor" }
       ]
     },
     {
-      "type": "note",
-      "name": "Note",
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [
-          { "value": "truck", "label": "Truck" },
-          { "value": "shield", "label": "Shield" },
-          { "value": "lock", "label": "Lock" }
-        ] },
-        { "type": "richtext", "id": "text", "label": "Text", "default": "<p><strong>Ships in 1–2 business days.</strong> Free US shipping on every order.</p>" }
+        { "type": "checkbox", "id": "show_payment_button", "label": "Show dynamic checkout button", "default": true },
+        { "type": "checkbox", "id": "show_quantity", "label": "Show quantity selector", "default": true }
       ]
     },
     {
       "type": "collapsible",
       "name": "Collapsible tab",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Details" },
-        { "type": "checkbox", "id": "use_description", "label": "Show product description", "default": false },
-        { "type": "richtext", "id": "content", "label": "Content" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Description" },
+        { "type": "select", "id": "source", "label": "Content", "default": "custom", "options": [
+          { "value": "description", "label": "Product description" },
+          { "value": "custom", "label": "Custom text" }
+        ] },
+        { "type": "richtext", "id": "content", "label": "Custom text" },
         { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
       ]
     }

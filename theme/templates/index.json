@@ -3,49 +3,59 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "product": "holdfast-anti-slip-work-knee-pads",
-        "kicker": "For flooring, tile, HVAC, electrical & plumbing",
-        "heading_line_1": "Knee pads that",
-        "swap_words": "stay up., don't slide., don't pinch., go all day.",
-        "text": "<p>Every pair you've owned either slides to your ankles or cuts off your circulation. Holdfast grips without squeezing, so they're still on your knees when you stand back up.</p>",
-        "button_label": "Shop Holdfast",
+        "heading": "Work knee pads that stay up",
+        "text": "<p>Hard shell cap, gel cushion and two adjustable straps with a silicone grip lining. The straps hold onto your pant legs instead of squeezing the back of your knee, so the pads stay put when you stand up.</p>",
+        "button_label": "Shop knee pads",
         "button_link": "/products/holdfast-anti-slip-work-knee-pads",
-        "button_2_label": "Watch the stand-up test",
-        "button_2_link": "#slip-test",
-        "backdrop_word": "HOLDFAST"
+        "button_2_label": "See how they work",
+        "button_2_link": "#how",
+        "note": "Free US shipping · 30-day returns · $64.99 a pair"
       }
     },
-    "ticker": {
-      "type": "ticker",
-      "settings": {
-        "items": "Flooring, Tile, Carpet, HVAC, Electrical, Plumbing, Framing, Roofing, Concrete, Landscaping, Mechanics, Serious DIY",
-        "style": "accent",
-        "tilt": true,
-        "speed": 35
-      }
-    },
-    "pain": {
-      "type": "pain-quotes",
+    "trust": {
+      "type": "trust-bar",
       "blocks": {
-        "q1": { "type": "quote", "settings": { "quote": "They slide down literally every time I stand up.", "caption": "The most common complaint" } },
-        "q2": { "type": "quote", "settings": { "quote": "Either they slide to my ankles or they cut off circulation. There's no in-between.", "caption": "The strap trade-off" } },
-        "q3": { "type": "quote", "settings": { "quote": "Is anyone actually happy with their knee pads?", "caption": "A question the trades keep asking" } }
+        "a": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free US shipping",
+            "text": "On every order"
+          }
+        },
+        "b": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "30-day returns",
+            "text": "Even if you've worn them"
+          }
+        },
+        "c": {
+          "type": "item",
+          "settings": {
+            "icon": "knee",
+            "title": "One size fits most",
+            "text": "Over jeans, work pants or bibs"
+          }
+        },
+        "d": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure checkout",
+            "text": "Encrypted payment"
+          }
+        }
       },
-      "block_order": ["q1", "q2", "q3"],
+      "block_order": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
       "settings": {
-        "anchor": "why",
-        "kicker": "The problem",
-        "heading": "You've already paid to fix this. It didn't work.",
-        "text": "<p>The same complaint shows up across the flooring, carpentry, electrical, HVAC and construction forums. It isn't one bad brand. Most strap knee pads fail the same way.</p>"
-      }
-    },
-    "slip": {
-      "type": "slip-test",
-      "settings": {
-        "anchor": "slip-test",
-        "kicker": "The stand-up test",
-        "heading": "Kneel. Stand. Repeat all day.",
-        "text": "<p>That's where most knee pads give up. Watch what happens every time you get off your knees.</p>"
+        "alt_background": false
       }
     },
     "featured": {
@@ -53,101 +63,319 @@
       "settings": {
         "product": "holdfast-anti-slip-work-knee-pads",
         "anchor": "shop",
-        "kicker": "The only pair you'll need",
-        "sticker": "Stays up",
-        "ticks": "Anti-slip silicone lining grips your pants\nSplit straps: no tourniquet behind the knee\nGel cushion over high-density foam\nHard cap slides on tile, pivots on subfloor",
-        "show_payment_button": true
+        "text": "<p>Hard cap knee pads with a gel cushion and silicone-lined straps that grip your pants instead of squeezing your leg.</p>",
+        "highlights": "Silicone grip lining holds onto your pant legs\nTwo adjustable straps, one above and one below the knee\nGel cushion over high-density foam\nHard shell cap for concrete, tile and subfloor",
+        "show_payment_button": false,
+        "alt_background": false
       }
     },
-    "features": {
-      "type": "features",
+    "why": {
+      "type": "compare-slider",
       "blocks": {
-        "f1": { "type": "feature", "settings": { "icon": "grip", "title": "They stay up", "text": "<p>A silicone grip band inside each strap holds onto your work pants. Kneel, stand, climb the ladder, kneel again. The pads stay where you put them.</p>" } },
-        "f2": { "type": "feature", "settings": { "icon": "strap", "title": "Cushion without the tourniquet", "text": "<p>Pads that only stay up because they're cranked tight leave your legs numb by lunch. Wide split straps sit above and below the joint, so they hold without squeezing.</p>" } },
-        "f3": { "type": "feature", "settings": { "icon": "drop", "title": "Your knees don't grow back", "text": "<p>Years on tile and subfloor add up. Gel over dense foam takes the pressure off the kneecap, so you can still kneel at the end of the week and at the end of a career.</p>" } }
+        "p1": {
+          "type": "point",
+          "settings": {
+            "text": "Silicone lining grips your pant leg"
+          }
+        },
+        "p2": {
+          "type": "point",
+          "settings": {
+            "text": "Two straps share the load, so neither has to be tight"
+          }
+        },
+        "p3": {
+          "type": "point",
+          "settings": {
+            "text": "Nothing presses into the back of your knee"
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f3"],
-      "settings": { "anchor": "features", "kicker": "Why Holdfast", "heading": "Built around one job: staying put", "center": false, "dark": false }
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ],
+      "settings": {
+        "anchor": "why",
+        "before_label": "Typical strap pad",
+        "after_label": "Holdfast",
+        "caption": "Both shown after standing up from a kneel. Drag to compare.",
+        "layout": "media_left",
+        "heading": "Why they don't slide down",
+        "text": "<p>Most strap knee pads stay up one way: a tight band across the back of the knee. Holdfast uses two straps, one above the knee and one below, lined with silicone that grips your pants.</p>",
+        "alt_background": true
+      }
     },
-    "stats": {
-      "type": "stats",
+    "how": {
+      "type": "hotspots",
       "blocks": {
-        "s1": { "type": "stat", "settings": { "number": 4, "suffix": "", "label": "layers between your knee and the floor" } },
-        "s2": { "type": "stat", "settings": { "number": 2, "suffix": "", "label": "wide straps, above & below the joint" } },
-        "s3": { "type": "stat", "settings": { "number": 0, "suffix": "", "label": "tourniquets behind your knee" } },
-        "s4": { "type": "stat", "settings": { "number": 30, "suffix": "-day", "label": "stay-up guarantee" } }
+        "h1": {
+          "type": "hotspot",
+          "settings": {
+            "title": "Hard shell cap",
+            "text": "Stands up to concrete, gravel and loose screws, so the cushion underneath lasts longer.",
+            "x": 50,
+            "y": 46
+          }
+        },
+        "h2": {
+          "type": "hotspot",
+          "settings": {
+            "title": "Gel cushion over foam",
+            "text": "Gel spreads your weight across the pad instead of the point of your kneecap. High-density foam underneath keeps it supported through a full day.",
+            "x": 40,
+            "y": 71
+          }
+        },
+        "h3": {
+          "type": "hotspot",
+          "settings": {
+            "title": "Two adjustable straps",
+            "text": "One strap sits above the knee and one below, so neither has to be cranked tight and nothing presses into the back of your knee.",
+            "x": 77,
+            "y": 34
+          }
+        },
+        "h4": {
+          "type": "hotspot",
+          "settings": {
+            "title": "Silicone grip lining",
+            "text": "A silicone strip inside each strap holds onto your pant leg, so the pad stays over your knee when you stand, walk or climb a ladder.",
+            "x": 25,
+            "y": 34
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3", "s4"],
-      "settings": { "style": "ink" }
+      "block_order": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ],
+      "settings": {
+        "anchor": "how",
+        "heading": "How they're built",
+        "text": "Select a point on the pad to see what it does.",
+        "alt_background": false
+      }
     },
-    "layers": {
-      "type": "layers",
+    "trades": {
+      "type": "trade-carousel",
       "blocks": {
-        "l1": { "type": "layer", "settings": { "title": "Hard shell cap", "text": "Takes the abuse from concrete, gravel and screws so the cushion underneath doesn't." } },
-        "l2": { "type": "layer", "settings": { "title": "Gel cushion", "text": "Spreads your weight across the whole pad instead of the point of your kneecap." } },
-        "l3": { "type": "layer", "settings": { "title": "High-density foam", "text": "Keeps its shape through long days instead of packing down flat in a month." } },
-        "l4": { "type": "layer", "settings": { "title": "Grip lining + split straps", "text": "Grips your pants and holds the pad over the joint without a tight band behind the knee." } }
+        "t1": {
+          "type": "trade",
+          "settings": {
+            "icon": "flooring",
+            "title": "Flooring",
+            "text": "Hardwood, LVP and carpet installs"
+          }
+        },
+        "t2": {
+          "type": "trade",
+          "settings": {
+            "icon": "tile",
+            "title": "Tile",
+            "text": "Floors, showers and backsplashes"
+          }
+        },
+        "t3": {
+          "type": "trade",
+          "settings": {
+            "icon": "electrical",
+            "title": "Electrical",
+            "text": "Outlets, panels and low runs"
+          }
+        },
+        "t4": {
+          "type": "trade",
+          "settings": {
+            "icon": "plumbing",
+            "title": "Plumbing",
+            "text": "Under sinks and in crawlspaces"
+          }
+        },
+        "t5": {
+          "type": "trade",
+          "settings": {
+            "icon": "hvac",
+            "title": "HVAC",
+            "text": "Attics, ducts and floor registers"
+          }
+        },
+        "t6": {
+          "type": "trade",
+          "settings": {
+            "icon": "framing",
+            "title": "Framing",
+            "text": "Decking, sheathing and layout"
+          }
+        },
+        "t7": {
+          "type": "trade",
+          "settings": {
+            "icon": "concrete",
+            "title": "Concrete",
+            "text": "Finishing and flatwork"
+          }
+        }
       },
-      "block_order": ["l1", "l2", "l3", "l4"],
-      "settings": { "anchor": "how", "kicker": "How it works", "heading": "Four layers. Each with one job." }
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "t7"
+      ],
+      "settings": {
+        "heading": "Built for your trade",
+        "text": "Made for long days on tile, subfloor, concrete and crawlspaces.",
+        "alt_background": true
+      }
     },
     "compare": {
       "type": "comparison",
       "blocks": {
-        "r1": { "type": "row", "settings": { "feature": "Stays up when you stand", "us": "Anti-slip lining holds it", "them": "Slides toward the ankle" } },
-        "r2": { "type": "row", "settings": { "feature": "Strap pressure", "us": "Two wide straps, above & below", "them": "One tight band behind the knee" } },
-        "r3": { "type": "row", "settings": { "feature": "Cushion", "us": "Gel over high-density foam", "them": "Foam only, packs down" } },
-        "r4": { "type": "row", "settings": { "feature": "Cap", "us": "Hard shell, slides & pivots", "them": "Soft or thin plastic" } },
-        "r5": { "type": "row", "settings": { "feature": "Guarantee", "us": "30-day stay-up guarantee", "them": "Varies by brand" } }
+        "r1": {
+          "type": "row",
+          "settings": {
+            "feature": "Staying up",
+            "us": "Silicone grip lining",
+            "them": "Strap tension only"
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "feature": "Strap fit",
+            "us": "Two straps, above and below the knee",
+            "them": "One band behind the knee"
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "feature": "Cushion",
+            "us": "Gel over high-density foam",
+            "them": "Foam only"
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "feature": "Cap",
+            "us": "Hard shell",
+            "them": "Soft or thin plastic"
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3", "r4", "r5"],
-      "settings": { "anchor": "compare", "kicker": "Side by side", "heading": "Not another strap-and-hope pad", "us_label": "Holdfast", "them_label": "Typical strap pads" }
-    },
-    "guarantee": {
-      "type": "guarantee",
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
       "settings": {
-        "anchor": "guarantee",
-        "kicker": "Zero risk",
-        "days": "30",
-        "ring_text": "Stay-up guarantee",
-        "heading": "Wear them on the job. If they slide, send them back.",
-        "text": "<p>Put them through a real work week. If they slide down or leave your legs numb, contact us within 30 days of delivery and we'll make it right with a refund.</p>",
-        "button_label": "Try them risk-free",
-        "button_link": "/products/holdfast-anti-slip-work-knee-pads"
+        "heading": "Holdfast vs. typical strap knee pads",
+        "us_label": "Holdfast",
+        "them_label": "Typical single-strap pad",
+        "alt_background": false
+      }
+    },
+    "returns": {
+      "type": "banner",
+      "settings": {
+        "icon": "return",
+        "heading": "30-day returns",
+        "text": "<p>Wear them on the job for a full week. If they slide down, pinch, or just aren't right for you, contact us within 30 days of delivery for a full refund.</p>",
+        "button_label": "How returns work",
+        "button_link": "/pages/faq",
+        "background": "alt"
       }
     },
     "reviews": {
       "type": "reviews",
       "settings": {
-        "anchor": "reviews",
-        "kicker": "Reviews",
-        "heading": "From the job site",
-        "empty_heading": "We're new, and we don't post reviews we didn't earn.",
-        "empty_text": "Verified buyer reviews will show up here as the first orders get worn in."
+        "heading": "Customer reviews",
+        "alt_background": false
       }
     },
     "faq": {
       "type": "faq",
       "blocks": {
-        "a1": { "type": "question", "settings": { "question": "Will they really stay up?", "answer": "<p>That's what they're designed for. The silicone lining grips your pants and the two straps hold the pad over the joint, not behind it. If they slide on you anyway, the guarantee covers it.</p>" } },
-        "a2": { "type": "question", "settings": { "question": "Do they cut off circulation?", "answer": "<p>The straps sit above and below the knee instead of across the back of it, and they're wide, so the pressure is spread out. Snug them enough to hold, not to squeeze.</p>" } },
-        "a3": { "type": "question", "settings": { "question": "What size do I need?", "answer": "<p>One size fits most adults. The straps adjust to fit over jeans, work pants or bib overalls.</p>" } },
-        "a4": { "type": "question", "settings": { "question": "Will the cap scratch finished floors?", "answer": "<p>The hard cap is made for subfloor, concrete and tile. On finished hardwood, put a drop cloth down the same way you would with any hard-cap pad.</p>" } },
-        "a5": { "type": "question", "settings": { "question": "How long does shipping take?", "answer": "<p>Orders ship in 1–2 business days. Shipping is free to anywhere in the US, and you'll get a tracking link by email.</p>" } },
-        "a6": { "type": "question", "settings": { "question": "What's the return policy?", "answer": "<p>If the pads slide, numb your legs, or just aren't for you, contact us within 30 days of delivery for a refund.</p>" } }
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Will they stay up when I stand?",
+            "answer": "<p>That's what they're designed to do. The silicone lining inside each strap grips your pants, and the two straps hold the pad over your kneecap instead of relying on one tight band. If they still slide, send them back within 30 days.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Do the straps cut off circulation?",
+            "answer": "<p>They shouldn't. One strap sits above the knee and one below, so nothing presses into the back of the joint. Tighten them until the pad doesn't shift, then stop.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "What size do I need?",
+            "answer": "<p>One size fits most adults. Both straps adjust, and the pads fit over jeans, work pants and bib overalls.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Will the cap scratch finished floors?",
+            "answer": "<p>It can. The hard cap is made for subfloor, concrete and tile. On finished hardwood or vinyl, put down a drop cloth like you would with any hard-cap pad.</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "How much is shipping?",
+            "answer": "<p>Shipping is free to anywhere in the US. You'll get a tracking link by email as soon as your order ships.</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "What's your return policy?",
+            "answer": "<p>You have 30 days from delivery to return them for a full refund, even if you've worn them on the job. Send us a message with your order number to start a return.</p>"
+          }
+        }
       },
-      "block_order": ["a1", "a2", "a3", "a4", "a5", "a6"],
-      "settings": { "anchor": "faq", "kicker": "FAQ", "heading": "Questions before you kneel", "open_first": true, "dark": false }
-    },
-    "cta": {
-      "type": "cta-banner",
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
       "settings": {
-        "heading": "Stop pulling your knee pads up.",
-        "text": "Pads that stay put and don't cut off circulation.",
-        "button_label": "Shop Holdfast",
-        "button_link": "/products/holdfast-anti-slip-work-knee-pads"
+        "anchor": "faq",
+        "heading": "Frequently asked questions",
+        "text": "<p>Can't find what you're looking for? Send us a message.</p>",
+        "link_label": "Contact us",
+        "link": "/pages/contact",
+        "alt_background": false
       }
     }
   },
-  "order": ["hero", "ticker", "pain", "slip", "featured", "features", "stats", "layers", "compare", "guarantee", "reviews", "faq", "cta"]
+  "order": [
+    "hero",
+    "trust",
+    "featured",
+    "why",
+    "how",
+    "trades",
+    "compare",
+    "returns",
+    "reviews",
+    "faq"
+  ]
 }

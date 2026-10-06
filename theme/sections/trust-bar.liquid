@@ -1,0 +1,49 @@
+{%- if section.blocks.size > 0 -%}
+<div class="trust-bar{% if section.settings.alt_background %} section--alt{% endif %}">
+  <div class="page-width">
+    <ul class="trust-bar__list">
+      {%- for block in section.blocks -%}
+        <li class="trust-bar__item" {{ block.shopify_attributes }}>
+          {% render 'icon', name: block.settings.icon %}
+          <div>
+            <strong>{{ block.settings.title }}</strong>
+            {%- if block.settings.text != blank -%}<span>{{ block.settings.text }}</span>{%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Trust bar",
+  "class": "section-trust-bar",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "checkbox", "id": "alt_background", "label": "Alternate background", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [
+          { "value": "truck", "label": "Truck" },
+          { "value": "return", "label": "Return" },
+          { "value": "shield", "label": "Shield" },
+          { "value": "lock", "label": "Lock" },
+          { "value": "box", "label": "Box" },
+          { "value": "clock", "label": "Clock" },
+          { "value": "chat", "label": "Chat" },
+          { "value": "knee", "label": "Knee" }
+        ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free US shipping" },
+        { "type": "text", "id": "text", "label": "Text", "default": "On every order" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Trust bar", "blocks": [{ "type": "item" }, { "type": "item" }, { "type": "item" }, { "type": "item" }] }]
+}
+{% endschema %}

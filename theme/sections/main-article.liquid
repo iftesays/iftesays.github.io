@@ -1,10 +1,13 @@
-<article class="section page-sec">
-  <div class="wrap wrap--narrow">
-    <a href="{{ blog.url }}" class="label-mono label-mono--accent">← {{ blog.title }}</a>
-    <h1 class="h1">{{ article.title }}</h1>
-    <p class="label-mono">{{ article.published_at | date: '%B %d, %Y' }}{% if article.author %} · {{ article.author }}{% endif %}</p>
-    {%- if article.image -%}<div class="article-img">{{ article.image | image_url: width: 1600 | image_tag: widths: '800, 1200, 1600', alt: article.title }}</div>{%- endif -%}
-    <div class="rte rte--lg">{{ article.content }}</div>
+<article class="section">
+  <div class="page-width page-width--narrow">
+    <p class="text-muted"><a href="{{ blog.url }}">{{ blog.title }}</a></p>
+    <h1>{{ article.title }}</h1>
+    <p class="article__meta">{{ article.published_at | date: '%B %-d, %Y' }}{% if article.author %} · {{ article.author }}{% endif %}</p>
+    {%- if article.image -%}
+      {%- assign alt = article.image.alt | default: article.title -%}
+      <div class="media media--wide article__image">{{ article.image | image_url: width: 1800 | image_tag: widths: '800, 1200, 1800', sizes: '(min-width: 860px) 860px, 100vw', alt: alt }}</div>
+    {%- endif -%}
+    <div class="rte" style="font-size: 1.125rem">{{ article.content }}</div>
   </div>
 </article>
 
